@@ -1,0 +1,139 @@
+{
+  "metadata": {
+    "projectType": "da"
+  },
+  "templates": [
+    {
+      "name": "content-landing",
+      "urls": [
+        "https://wknd.site/us/en/about-us.html",
+        "https://wknd.site/us/en/magazine.html"
+      ],
+      "coverageGaps": [],
+      "description": "Content landing page with a page title followed by repeated heading-plus-card-grid sections",
+      "blocks": [
+        {
+          "name": "hero",
+          "instances": [".teaser.cmp-teaser--featured"]
+        },
+        {
+          "name": "cards",
+          "instances": [".image-list.list"]
+        }
+      ]
+    },
+    {
+      "name": "adventure-detail",
+      "urls": [
+        "https://wknd.site/us/en/adventures/bali-surf-camp.html",
+        "https://wknd.site/us/en/adventures/beervana-portland.html",
+        "https://wknd.site/us/en/adventures/climbing-new-zealand.html",
+        "https://wknd.site/us/en/adventures/colorado-rock-climbing.html",
+        "https://wknd.site/us/en/adventures/cycling-southern-utah.html",
+        "https://wknd.site/us/en/adventures/cycling-tuscany.html",
+        "https://wknd.site/us/en/adventures/downhill-skiing-wyoming.html",
+        "https://wknd.site/us/en/adventures/gastronomic-marais-tour.html",
+        "https://wknd.site/us/en/adventures/napa-wine-tasting.html",
+        "https://wknd.site/us/en/adventures/riverside-camping-australia.html",
+        "https://wknd.site/us/en/adventures/ski-touring-mont-blanc.html",
+        "https://wknd.site/us/en/adventures/surf-camp-costa-rica.html",
+        "https://wknd.site/us/en/adventures/tahoe-skiing.html",
+        "https://wknd.site/us/en/adventures/west-coast-cycling.html",
+        "https://wknd.site/us/en/adventures/whistler-mountain-biking.html",
+        "https://wknd.site/us/en/adventures/yosemite-backpacking.html"
+      ],
+      "coverageGaps": [],
+      "description": "Detail page with a carousel hero, a left sidebar of labeled metadata fields, and a tabbed main content area with body copy and imagery",
+      "blocks": [
+        {
+          "name": "breadcrumbs",
+          "instances": [".breadcrumb.cmp-breadcrumb--fixed", ".breadcrumb"]
+        },
+        {
+          "name": "carousel",
+          "instances": [".carousel.panelcontainer"]
+        },
+        {
+          "name": "tabs",
+          "instances": [".tabs.panelcontainer"]
+        }
+      ]
+    },
+    {
+      "name": "adventures-listing",
+      "urls": [
+        "https://wknd.site/us/en/adventures.html"
+      ],
+      "coverageGaps": [],
+      "description": "Listing page with a page title, a hero image with an overlaid text panel, and a filterable/tabbed grid of teaser cards",
+      "blocks": [
+        {
+          "name": "hero",
+          "instances": [".teaser.cmp-teaser--hero"]
+        },
+        {
+          "name": "tabs",
+          "instances": [".tabs.panelcontainer"]
+        }
+      ]
+    },
+    {
+      "name": "faq-page",
+      "urls": [
+        "https://wknd.site/us/en/faqs.html"
+      ],
+      "coverageGaps": [],
+      "description": "Support page with a page title, a large image, intro copy, an accordion list of expandable items, and a contact sidebar",
+      "blocks": [
+        {
+          "name": "accordion",
+          "instances": [".accordion.panelcontainer"]
+        }
+      ]
+    },
+    {
+      "name": "homepage",
+      "urls": [
+        "https://wknd.site/us/en.html"
+      ],
+      "coverageGaps": [],
+      "description": "Landing page with a full-width carousel hero, a featured-article split panel, a card grid of recent items, and a secondary feature banner with a supporting card grid",
+      "blocks": [
+        {
+          "name": "carousel",
+          "instances": [".carousel.panelcontainer"]
+        },
+        {
+          "name": "hero",
+          "instances": [".teaser.cmp-teaser--featured", ".teaser"]
+        },
+        {
+          "name": "cards",
+          "instances": [".image-list.list"]
+        }
+      ]
+    },
+    {
+      "name": "article-detail",
+      "urls": [
+        "https://wknd.site/us/en/magazine/arctic-surfing.html",
+        "https://wknd.site/us/en/magazine/guide-la-skateparks.html",
+        "https://wknd.site/us/en/magazine/san-diego-surf.html",
+        "https://wknd.site/us/en/magazine/ski-touring.html",
+        "https://wknd.site/us/en/magazine/western-australia.html"
+      ],
+      "coverageGaps": [],
+      "description": "Long-form article page with a hero image, title and byline, prose body with inline images and subheadings, and a related-links sidebar",
+      "blocks": [
+        {
+          "name": "breadcrumbs",
+          "instances": [".breadcrumb.aem-GridColumn", ".breadcrumb"]
+        },
+        {
+          "name": "quote",
+          "instances": ["blockquote", ".cmp-text blockquote"]
+        }
+      ]
+    }
+  ]
+}
