@@ -81,6 +81,11 @@ function createSlide(row, slideIndex, carouselId) {
   slide.classList.add('carousel-slide');
 
   row.querySelectorAll(':scope > div').forEach((column, colIdx) => {
+    // skip an empty column (e.g. a single-image slide with no caption) so no
+    // blank caption panel is rendered
+    if (colIdx > 0 && column.textContent.trim() === '' && !column.querySelector('img, picture, video')) {
+      return;
+    }
     column.classList.add(`carousel-slide-${colIdx === 0 ? 'image' : 'content'}`);
     slide.append(column);
   });

@@ -67,5 +67,18 @@ export default function transform(hookName, element, payload) {
       el.removeAttribute('data-cmp-clickable');
       el.removeAttribute('onclick');
     });
+
+    // De-duplicate the page title: WKND adventure/detail pages repeat the H1
+    // title as an H3 in the metadata region and inside each tab panel. Keep the
+    // first H1 and drop any later h2–h4 with identical text.
+    const h1 = element.querySelector('h1');
+    if (h1) {
+      const titleText = h1.textContent.trim().toLowerCase();
+      element.querySelectorAll('h2, h3, h4').forEach((heading) => {
+        if (heading.textContent.trim().toLowerCase() === titleText) {
+          heading.remove();
+        }
+      });
+    }
   }
 }
