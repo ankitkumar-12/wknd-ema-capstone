@@ -359,10 +359,13 @@ main .section.highlight {
   main .section.carousel-container.tabs-container > .breadcrumbs-wrapper,
   main .section.carousel-container.tabs-container > .carousel-wrapper {
     grid-column: 1 / -1;
+    min-width: 0;
+    width: 100%;
   }
 
   main .section.carousel-container.tabs-container > div {
     max-width: none;
+    min-width: 0;
     padding: 0;
   }
 
