@@ -73,7 +73,8 @@ function setupSearch(navTools) {
   const search = document.createElement('div');
   search.className = 'nav-search';
   search.innerHTML = `
-    <input type="search" class="nav-search-input" placeholder="Search" aria-label="Search" autocomplete="off" />
+    <span class="nav-search-icon" aria-hidden="true"></span>
+    <input type="search" class="nav-search-input" placeholder="SEARCH" aria-label="Search" autocomplete="off" />
     <ul class="nav-search-results" role="listbox" hidden></ul>`;
   // place search before any existing tools (e.g. Sign In)
   navTools.prepend(search);
@@ -241,8 +242,31 @@ export default async function decorate(block) {
     if (brandContainer) brandContainer.className = '';
   }
 
-  // wire up the search box in the tools area
-  setupSearch(nav.querySelector('.nav-tools'));
+  // move the utility links (Sign In, language) into a black top bar and wire
+  // up search in the tools area
+  const navTools = nav.querySelector('.nav-tools');
+  let utilityBar;
+  if (navTools) {
+    // any .button promotion from decorateButtons is undone — utility links are
+    // plain text in the original WKND header
+    navTools.querySelectorAll('a.button').forEach((a) => {
+      a.className = '';
+      const wrapper = a.closest('.button-container');
+      if (wrapper) wrapper.className = '';
+    });
+    // lift the authored utility links (Sign In / language) out of tools into
+    // a dedicated utility bar rendered above the main nav row
+    const utilityLinks = [...navTools.querySelectorAll('p > a')];
+    if (utilityLinks.length) {
+      utilityBar = document.createElement('div');
+      utilityBar.className = 'nav-utility';
+      utilityLinks.forEach((a) => {
+        a.closest('p').remove();
+        utilityBar.append(a);
+      });
+    }
+  }
+  setupSearch(navTools);
 
   const navSections = nav.querySelector('.nav-sections');
   if (navSections) {
@@ -273,6 +297,7 @@ export default async function decorate(block) {
 
   const navWrapper = document.createElement('div');
   navWrapper.className = 'nav-wrapper';
+  if (utilityBar) navWrapper.append(utilityBar);
   navWrapper.append(nav);
   block.append(navWrapper);
 }

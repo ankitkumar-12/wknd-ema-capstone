@@ -7,6 +7,35 @@ header .nav-wrapper {
   border-bottom: 1px solid var(--light-color);
 }
 
+/* black utility bar (Sign In + language) above the main nav row */
+header .nav-utility {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 24px;
+  height: 40px;
+  padding: 0 24px;
+  background-color: var(--text-color);
+}
+
+header .nav-utility a:any-link {
+  color: #ebebeb;
+  font-size: var(--body-font-size-xs);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  text-decoration: none;
+}
+
+header .nav-utility a:hover {
+  color: var(--wknd-yellow);
+}
+
+@media (width >= 900px) {
+  header .nav-utility {
+    padding: 0 32px;
+  }
+}
+
 header nav {
   box-sizing: border-box;
   display: grid;
@@ -55,6 +84,7 @@ header nav p {
   line-height: 1;
 }
 
+/* stylelint-disable-next-line no-descending-specificity */
 header nav a:any-link {
   color: currentcolor;
 }
@@ -308,17 +338,42 @@ header nav .nav-search {
   position: relative;
 }
 
+header nav .nav-search-icon {
+  position: absolute;
+  top: 50%;
+  left: 14px;
+  transform: translateY(-50%);
+  width: 14px;
+  height: 14px;
+  border: 2px solid var(--dark-color);
+  border-radius: 50%;
+  pointer-events: none;
+}
+
+header nav .nav-search-icon::after {
+  content: '';
+  position: absolute;
+  top: 12px;
+  left: 10px;
+  width: 6px;
+  height: 2px;
+  background-color: var(--dark-color);
+  transform: rotate(45deg);
+}
+
 header nav .nav-search-input {
   box-sizing: border-box;
   height: 40px;
   width: 200px;
   max-width: 100%;
   border: 0;
-  padding: 0 16px;
+  padding: 0 16px 0 38px;
   background-color: var(--light-color);
   color: var(--text-color);
   font-family: var(--body-font-family);
   font-size: var(--body-font-size-xs);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
 }
 
 header nav .nav-search-results {
