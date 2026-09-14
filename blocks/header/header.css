@@ -296,8 +296,19 @@ header nav .nav-tools {
   gap: 16px;
 }
 
-header nav .nav-tools input,
-header nav .nav-tools .search input {
+header nav .nav-tools a:any-link {
+  color: var(--text-color);
+  text-transform: uppercase;
+  font-size: var(--body-font-size-xs);
+  letter-spacing: 0.5px;
+}
+
+/* search */
+header nav .nav-search {
+  position: relative;
+}
+
+header nav .nav-search-input {
   box-sizing: border-box;
   height: 40px;
   width: 200px;
@@ -310,9 +321,50 @@ header nav .nav-tools .search input {
   font-size: var(--body-font-size-xs);
 }
 
-header nav .nav-tools a:any-link {
+header nav .nav-search-results {
+  position: absolute;
+  top: calc(100% + 4px);
+  right: 0;
+  z-index: 3;
+  width: 280px;
+  max-width: 80vw;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  background-color: var(--background-color);
+  border: 1px solid var(--light-color);
+  box-shadow: 0 4px 12px rgb(0 0 0 / 12%);
+}
+
+header nav .nav-search-results[hidden] {
+  display: none;
+}
+
+/* stylelint-disable-next-line no-descending-specificity */
+header nav .nav-search .nav-search-results > li {
+  border-bottom: 1px solid var(--light-color);
+}
+
+header nav .nav-search .nav-search-results > li:last-child {
+  border-bottom: 0;
+}
+
+header nav .nav-search-results a:any-link {
+  display: block;
+  padding: 10px 16px;
   color: var(--text-color);
-  text-transform: uppercase;
+  text-transform: none;
+  letter-spacing: 0;
   font-size: var(--body-font-size-xs);
-  letter-spacing: 0.5px;
+}
+
+header nav .nav-search-results a:hover {
+  background-color: var(--light-color);
+  text-decoration: none;
+}
+
+header nav .nav-search-empty {
+  padding: 10px 16px;
+  color: var(--dark-color);
+  font-size: var(--body-font-size-xs);
 }
