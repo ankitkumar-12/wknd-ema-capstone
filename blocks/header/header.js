@@ -4,6 +4,109 @@ import { loadFragment } from '../fragment/fragment.js';
 // media query match that indicates mobile/tablet width
 const isDesktop = window.matchMedia('(min-width: 900px)');
 
+// path (relative to the site root) of the searchable index
+const SEARCH_INDEX_PATH = '/us/en/search-index.json';
+
+/**
+ * Loads the search index, preferring the EDS-generated query-index.json and
+ * falling back to the committed static index. Cached after first load.
+ * @returns {Promise<Array>} array of { path, title, description }
+ */
+let searchIndexPromise;
+async function loadSearchIndex() {
+  if (searchIndexPromise) return searchIndexPromise;
+  searchIndexPromise = (async () => {
+    const sources = ['/query-index.json', SEARCH_INDEX_PATH];
+    for (let i = 0; i < sources.length; i += 1) {
+      try {
+        // eslint-disable-next-line no-await-in-loop
+        const resp = await fetch(sources[i]);
+        if (!resp.ok) continue; // eslint-disable-line no-continue
+        // eslint-disable-next-line no-await-in-loop
+        const json = await resp.json();
+        if (json && Array.isArray(json.data) && json.data.length) return json.data;
+      } catch (e) { /* try next source */ }
+    }
+    return [];
+  })();
+  return searchIndexPromise;
+}
+
+/**
+ * Renders search results into the results container.
+ * @param {Element} results The results list container
+ * @param {Array} matches Matching index entries
+ * @param {string} query The current query
+ */
+function renderResults(results, matches, query) {
+  results.textContent = '';
+  if (!query) {
+    results.hidden = true;
+    return;
+  }
+  results.hidden = false;
+  if (!matches.length) {
+    const li = document.createElement('li');
+    li.className = 'nav-search-empty';
+    li.textContent = 'No results';
+    results.append(li);
+    return;
+  }
+  matches.slice(0, 8).forEach((entry) => {
+    const li = document.createElement('li');
+    const a = document.createElement('a');
+    a.href = entry.path;
+    a.textContent = entry.title || entry.path;
+    li.append(a);
+    results.append(li);
+  });
+}
+
+/**
+ * Wires up the header search: injects a search input + results list into the
+ * nav tools area and filters the index by title/description as the user types.
+ * @param {Element} navTools The nav tools container
+ */
+function setupSearch(navTools) {
+  if (!navTools) return;
+
+  const search = document.createElement('div');
+  search.className = 'nav-search';
+  search.innerHTML = `
+    <input type="search" class="nav-search-input" placeholder="Search" aria-label="Search" autocomplete="off" />
+    <ul class="nav-search-results" role="listbox" hidden></ul>`;
+  // place search before any existing tools (e.g. Sign In)
+  navTools.prepend(search);
+
+  const input = search.querySelector('.nav-search-input');
+  const results = search.querySelector('.nav-search-results');
+
+  const runSearch = async () => {
+    const query = input.value.trim().toLowerCase();
+    if (!query) { renderResults(results, [], ''); return; }
+    const data = await loadSearchIndex();
+    const matches = data.filter((entry) => {
+      const haystack = `${entry.title || ''} ${entry.description || ''}`.toLowerCase();
+      return haystack.includes(query);
+    });
+    renderResults(results, matches, query);
+  };
+
+  input.addEventListener('input', runSearch);
+  // navigate to the first result on Enter
+  input.addEventListener('keydown', (e) => {
+    if (e.key === 'Enter') {
+      const first = results.querySelector('a');
+      if (first) window.location.assign(first.href);
+    }
+  });
+  // close results when focus leaves the search
+  search.addEventListener('focusout', (e) => {
+    if (!search.contains(e.relatedTarget)) { results.hidden = true; }
+  });
+  input.addEventListener('focus', () => { if (input.value.trim()) runSearch(); });
+}
+
 function closeOnEscape(e) {
   if (e.code === 'Escape') {
     const nav = document.getElementById('nav');
@@ -137,6 +240,9 @@ export default async function decorate(block) {
     const brandContainer = brandLink.closest('.button-container');
     if (brandContainer) brandContainer.className = '';
   }
+
+  // wire up the search box in the tools area
+  setupSearch(nav.querySelector('.nav-tools'));
 
   const navSections = nav.querySelector('.nav-sections');
   if (navSections) {
