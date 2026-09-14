@@ -1,0 +1,19 @@
+{
+  "variantName": "quote",
+  "baseBlock": "quote",
+  "canonicalModel": "standalone",
+  "visualCharacteristics": {
+    "colorScheme": "neutral",
+    "density": "minimal",
+    "hasBackgroundImage": false,
+    "hasGrid": false,
+    "imagePattern": "none",
+    "structure": "centered italic pull-quote with optional attribution line"
+  },
+  "contentPattern": "first cell is the quotation text; optional second cell is the attribution (author/source)",
+  "options": [],
+  "memberVariantIds": [
+    "quote-minimal-dark-withimg",
+    "quote-minimal-dark-withimg-1"
+  ]
+}

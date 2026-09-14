@@ -1,0 +1,19 @@
+{
+  "variantName": "cards",
+  "baseBlock": "cards",
+  "canonicalModel": "standalone",
+  "visualCharacteristics": {
+    "colorScheme": "neutral",
+    "density": "minimal",
+    "hasBackgroundImage": false,
+    "hasGrid": true,
+    "imagePattern": "thumbnail",
+    "structure": "borderless teaser grid with full-bleed image, bold uppercase title and muted description"
+  },
+  "contentPattern": "one row per card; an image cell and a body cell (title + description)",
+  "options": [],
+  "memberVariantIds": [
+    "cards-minimal-dark-withimg",
+    "cards-minimal-dark-withimg-1"
+  ]
+}

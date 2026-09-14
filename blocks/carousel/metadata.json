@@ -1,0 +1,21 @@
+{
+  "variantName": "carousel",
+  "baseBlock": "carousel",
+  "canonicalModel": "standalone",
+  "visualCharacteristics": {
+    "colorScheme": "neutral",
+    "density": "minimal",
+    "hasBackgroundImage": true,
+    "hasGrid": false,
+    "imagePattern": "large",
+    "structure": "full-width image slides with optional caption panel, dot indicators and prev/next arrows"
+  },
+  "contentPattern": "one row per slide; first cell is the slide image, optional second cell is the caption content (heading, text, CTA)",
+  "options": [],
+  "memberVariantIds": [
+    "carousel-minimal-dark-withimg",
+    "carousel-minimal-dark-withimg-1",
+    "carousel-minimal-dark-withimg-2",
+    "carousel-minimal-dark-withimg-3"
+  ]
+}

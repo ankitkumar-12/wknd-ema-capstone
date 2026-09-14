@@ -1,0 +1,29 @@
+/* Quote — centered pull-quote with optional attribution. Structural/layout only. */
+.quote {
+  margin: 24px auto;
+  max-width: 800px;
+  text-align: center;
+}
+
+.quote .quote-quotation {
+  margin: 0;
+  padding: 0;
+  font-style: italic;
+  line-height: 1.5;
+}
+
+.quote .quote-quotation p {
+  margin: 0;
+}
+
+.quote .quote-attribution {
+  margin-top: 12px;
+  font-size: var(--body-font-size-xs);
+  font-style: normal;
+}
+
+@media (width >= 900px) {
+  .quote {
+    margin: 32px auto;
+  }
+}

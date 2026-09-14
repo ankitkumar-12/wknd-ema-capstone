@@ -1,0 +1,21 @@
+{
+  "variantName": "hero",
+  "baseBlock": "hero",
+  "canonicalModel": "standalone",
+  "visualCharacteristics": {
+    "colorScheme": "neutral",
+    "density": "minimal",
+    "hasBackgroundImage": true,
+    "hasGrid": false,
+    "imagePattern": "large",
+    "structure": "full-width image with an optional white content panel (heading, text, CTA) overlapping its lower area"
+  },
+  "contentPattern": "an image cell for the background and an optional content cell (heading, text, CTA); either may be omitted",
+  "options": [],
+  "memberVariantIds": [
+    "hero-minimal-dark-withimg",
+    "hero-minimal-dark-withimg-1",
+    "hero-minimal-dark-withimg-2",
+    "hero-minimal-dark-withimg-3"
+  ]
+}

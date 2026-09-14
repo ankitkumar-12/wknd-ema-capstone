@@ -1,3 +1,5 @@
+/* Hero — full-width image with an optional white content panel overlapping
+   its lower area. Structural/layout only. */
 .hero-container .hero-wrapper {
   max-width: unset;
   padding: 0;
@@ -5,33 +7,61 @@
 
 .hero {
   position: relative;
-  padding: 40px 24px;
-  min-height: 300px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: flex-end;
+  padding: 0;
+  min-height: min(52vw, 560px);
 }
 
-.hero h1 {
-  max-width: 1200px;
-  margin-left: auto;
-  margin-right: auto;
-  color: var(--background-color);
+/* background image */
+.hero .hero-image {
+  position: absolute;
+  inset: 0;
+  z-index: -1;
 }
 
 .hero picture {
   position: absolute;
-  z-index: -1;
   inset: 0;
-  object-fit: cover;
-  box-sizing: border-box;
 }
 
-.hero img {
-  object-fit: cover;
+.hero picture img {
   width: 100%;
   height: 100%;
+  object-fit: cover;
+}
+
+/* content panel overlaid near the bottom-left */
+.hero .hero-content {
+  position: relative;
+  z-index: 1;
+  box-sizing: border-box;
+  width: 100%;
+  max-width: 720px;
+  margin: 0;
+  padding: 32px 24px;
+  background-color: var(--background-color);
+  color: var(--text-color);
+}
+
+/* when there is no content panel, the hero is just the image with a title */
+.hero h1 {
+  max-width: 1200px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.hero .hero-content h1,
+.hero .hero-content h2 {
+  margin-top: 0;
 }
 
 @media (width >= 900px) {
-  .hero {
-    padding: 40px 32px;
+  .hero .hero-content {
+    padding: 40px 48px;
+    margin-left: 68px;
+    margin-bottom: 0;
   }
 }

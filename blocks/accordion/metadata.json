@@ -1,0 +1,18 @@
+{
+  "variantName": "accordion",
+  "baseBlock": "accordion",
+  "canonicalModel": "standalone",
+  "visualCharacteristics": {
+    "colorScheme": "neutral",
+    "density": "minimal",
+    "hasBackgroundImage": false,
+    "hasGrid": false,
+    "imagePattern": "none",
+    "structure": "expandable rows separated by dividers with a plus/minus toggle"
+  },
+  "contentPattern": "one row per item; first cell is the question/label, second cell is the answer body",
+  "options": [],
+  "memberVariantIds": [
+    "accordion-minimal-dark"
+  ]
+}

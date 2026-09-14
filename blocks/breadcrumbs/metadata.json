@@ -1,0 +1,18 @@
+{
+  "variantName": "breadcrumbs",
+  "baseBlock": "breadcrumbs",
+  "canonicalModel": "standalone",
+  "visualCharacteristics": {
+    "colorScheme": "neutral",
+    "density": "minimal",
+    "hasBackgroundImage": false,
+    "hasGrid": false,
+    "imagePattern": "none",
+    "structure": "inline trail of links separated by chevrons, last item is the current page"
+  },
+  "contentPattern": "a list of links forming the trail; the final item is the current page label",
+  "options": [],
+  "memberVariantIds": [
+    "breadcrumbs-minimal-dark"
+  ]
+}
