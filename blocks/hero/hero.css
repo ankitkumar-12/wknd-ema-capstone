@@ -58,6 +58,21 @@
   margin-top: 0;
 }
 
+/* featured-article variant: panel led by an eyebrow paragraph sits on a light
+   grey card (matches WKND's featured split panel) */
+.hero .hero-content:has(> p:first-child) {
+  background-color: var(--light-color);
+}
+
+/* eyebrow kicker above the featured title */
+.hero .hero-content > p:first-child {
+  margin: 0 0 8px;
+  color: var(--dark-color);
+  font-size: var(--body-font-size-xs);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
 @media (width >= 900px) {
   .hero .hero-content {
     padding: 40px 48px;
