@@ -116,6 +116,23 @@ h4 { font-size: var(--heading-font-size-m); }
 h5 { font-size: var(--heading-font-size-s); }
 h6 { font-size: var(--heading-font-size-xs); }
 
+/* WKND section headings: default-content section titles are 36px with a short
+   yellow underline. Scoped to default content so block titles are unaffected. */
+main .default-content-wrapper > h2,
+main .default-content-wrapper > h3 {
+  font-size: var(--heading-font-size-l);
+}
+
+main .default-content-wrapper > h2::after,
+main .default-content-wrapper > h3::after {
+  content: '';
+  display: block;
+  width: 84px;
+  height: 3px;
+  margin-top: 12px;
+  background-color: var(--wknd-yellow);
+}
+
 p,
 dl,
 ol,
