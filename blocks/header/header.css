@@ -30,6 +30,29 @@ header .nav-utility a:hover {
   color: var(--wknd-yellow);
 }
 
+/* language link with US flag icon */
+header .nav-utility .nav-utility-lang {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+
+header .nav-utility .nav-utility-flag {
+  display: inline-block;
+  width: 20px;
+  height: 14px;
+  flex: 0 0 auto;
+  border: 1px solid rgb(255 255 255 / 30%);
+
+  /* simplified stars-and-stripes: red/white stripes + blue canton */
+  background-image:
+    linear-gradient(to bottom, #b22234 0 15.4%, #fff 15.4% 30.8%, #b22234 30.8% 46.2%, #fff 46.2% 61.6%, #b22234 61.6% 77%, #fff 77% 92.4%, #b22234 92.4% 100%),
+    linear-gradient(#3c3b6e, #3c3b6e);
+  background-size: 100% 100%, 44% 54%;
+  background-position: 0 0, 0 0;
+  background-repeat: no-repeat, no-repeat;
+}
+
 @media (width >= 900px) {
   header .nav-utility {
     padding: 0 32px;
