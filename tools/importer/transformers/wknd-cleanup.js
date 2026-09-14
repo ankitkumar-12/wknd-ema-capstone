@@ -80,5 +80,16 @@ export default function transform(hookName, element, payload) {
         }
       });
     }
+
+    // Strip the ".html" suffix from internal, same-origin links: on EDS the
+    // extensionless path is canonical (/us/en/adventures.html 404s, /us/en/
+    // adventures is 200). Only touch relative paths ("/…"); leave external
+    // links, anchors, mailto/tel and query/hash fragments intact.
+    element.querySelectorAll('a[href]').forEach((a) => {
+      const href = a.getAttribute('href');
+      if (href && href.startsWith('/')) {
+        a.setAttribute('href', href.replace(/\.html(?=$|[?#])/, ''));
+      }
+    });
   }
 }
