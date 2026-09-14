@@ -117,12 +117,14 @@ h5 { font-size: var(--heading-font-size-s); }
 h6 { font-size: var(--heading-font-size-xs); }
 
 /* WKND section headings: default-content section titles are 36px with a short
-   yellow underline. Scoped to default content so block titles are unaffected. */
+   yellow underline. Scoped to default content so block titles are unaffected.
+   Detail-page H1 titles get the same yellow underline (but keep their size). */
 main .default-content-wrapper > h2,
 main .default-content-wrapper > h3 {
   font-size: var(--heading-font-size-l);
 }
 
+main .default-content-wrapper > h1::after,
 main .default-content-wrapper > h2::after,
 main .default-content-wrapper > h3::after {
   content: '';
@@ -340,4 +342,70 @@ main .section.highlight {
   background-color: var(--light-color);
   margin: 0;
   padding: 40px 0;
+}
+
+/* adventure-detail layout: breadcrumb + carousel full width, then a metadata
+   sidebar (default content) beside the tabbed content in two columns */
+@media (width >= 900px) {
+  main .section.carousel-container.tabs-container {
+    display: grid;
+    grid-template-columns: 280px 1fr;
+    column-gap: 48px;
+    max-width: 1200px;
+    margin: 40px auto;
+    padding: 0 32px;
+  }
+
+  main .section.carousel-container.tabs-container > .breadcrumbs-wrapper,
+  main .section.carousel-container.tabs-container > .carousel-wrapper {
+    grid-column: 1 / -1;
+    min-width: 0;
+    width: 100%;
+  }
+
+  main .section.carousel-container.tabs-container > div {
+    max-width: none;
+    min-width: 0;
+    padding: 0;
+  }
+
+  main .section.carousel-container.tabs-container > .default-content-wrapper {
+    grid-column: 1;
+  }
+
+  main .section.carousel-container.tabs-container > .tabs-wrapper {
+    grid-column: 2;
+  }
+
+  /* the H1 title spans both columns, above the sidebar/tabs */
+  main .section.carousel-container.tabs-container > .default-content-wrapper h1 {
+    grid-column: 1 / -1;
+  }
+}
+
+/* metadata list styled as labeled fields with a left divider rule */
+main .section.tabs-container .default-content-wrapper ul {
+  list-style: none;
+  padding: 0;
+  margin: 24px 0;
+}
+
+main .section.tabs-container .default-content-wrapper ul > li {
+  border-left: 2px solid var(--light-color);
+  padding: 4px 0 4px 16px;
+  margin-bottom: 20px;
+}
+
+main .section.tabs-container .default-content-wrapper ul > li p:first-child {
+  margin: 0;
+  color: var(--dark-color);
+  font-size: var(--body-font-size-xs);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+main .section.tabs-container .default-content-wrapper ul > li p:last-child {
+  margin: 2px 0 0;
+  font-weight: 700;
+  text-transform: uppercase;
 }
