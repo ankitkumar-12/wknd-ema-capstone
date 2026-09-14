@@ -1,0 +1,60 @@
+/* Accordion — FAQ-style expandable rows separated by thin dividers, with a
+   plus/minus toggle at the right. Structural/layout only. */
+.accordion .accordion-item {
+  border-bottom: 1px solid #dadada;
+}
+
+.accordion .accordion-item p {
+  margin-bottom: 0.8em;
+}
+
+.accordion .accordion-item summary {
+  position: relative;
+  padding: 20px 46px 20px 0;
+  cursor: pointer;
+  list-style: none;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+  overflow: auto;
+}
+
+.accordion .accordion-item summary::-webkit-details-marker {
+  display: none;
+}
+
+/* plus icon that becomes a minus when open */
+.accordion .accordion-item summary::before,
+.accordion .accordion-item summary::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  right: 8px;
+  width: 14px;
+  height: 2px;
+  background-color: currentcolor;
+  transition: transform 0.2s, opacity 0.2s;
+}
+
+.accordion .accordion-item summary::after {
+  transform: translateY(-50%) rotate(90deg);
+}
+
+.accordion .accordion-item summary::before {
+  transform: translateY(-50%);
+}
+
+.accordion .accordion-item[open] summary::after {
+  opacity: 0;
+}
+
+.accordion .accordion-item .accordion-item-body {
+  padding: 0 0 20px;
+}
+
+@media (width >= 900px) {
+  .accordion .accordion-item summary {
+    padding-top: 24px;
+    padding-bottom: 24px;
+  }
+}

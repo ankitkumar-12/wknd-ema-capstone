@@ -1,0 +1,61 @@
+/* Tabs — flat horizontal tab strip with an active solid chip and a
+   borderless content panel below. Structural/layout only. */
+.tabs .tabs-list {
+  display: flex;
+  gap: 8px;
+  max-width: 100%;
+  margin-bottom: 8px;
+  font-size: var(--body-font-size-xs);
+  overflow-x: auto;
+}
+
+.tabs .tabs-list button {
+  flex: 0 0 max-content;
+  margin: 0;
+  border: 0;
+  border-radius: 0;
+  padding: 10px 16px;
+  background-color: transparent;
+  color: var(--text-color);
+  font-family: var(--body-font-family);
+  font-weight: 600;
+  letter-spacing: 0.5px;
+  line-height: 1.25;
+  text-transform: uppercase;
+  text-align: initial;
+  white-space: nowrap;
+  cursor: pointer;
+  transition: background-color 0.2s, color 0.2s;
+}
+
+.tabs .tabs-list button p {
+  margin: 0;
+}
+
+/* active tab — solid dark chip */
+.tabs .tabs-list button[aria-selected='true'] {
+  background-color: var(--text-color);
+  color: var(--background-color);
+  cursor: initial;
+}
+
+/* content panel — no border, generous top spacing */
+.tabs .tabs-panel {
+  padding: 16px 0 0;
+  overflow: auto;
+}
+
+.tabs .tabs-panel[aria-hidden='true'] {
+  display: none;
+}
+
+.tabs .tabs-panel img {
+  width: 100%;
+  height: auto;
+}
+
+@media (width >= 900px) {
+  .tabs .tabs-list {
+    font-size: var(--body-font-size-s);
+  }
+}

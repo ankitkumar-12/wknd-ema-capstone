@@ -1,0 +1,24 @@
+{
+  "variantName": "tabs",
+  "baseBlock": "tabs",
+  "canonicalModel": "standalone",
+  "visualCharacteristics": {
+    "colorScheme": "neutral",
+    "density": "minimal",
+    "hasBackgroundImage": false,
+    "hasGrid": false,
+    "imagePattern": "inline",
+    "structure": "horizontal tab strip with active solid chip and a borderless content panel"
+  },
+  "contentPattern": "one row per tab; first cell is the tab label, remaining cell(s) are the panel content (text, images)",
+  "options": [],
+  "memberVariantIds": [
+    "tabs-minimal-dark-withimg",
+    "tabs-minimal-dark-withimg-1",
+    "tabs-minimal-dark-withimg-2",
+    "tabs-minimal-dark-withimg-3",
+    "tabs-minimal-dark-withimg-4",
+    "tabs-minimal-dark-withimg-5",
+    "tabs-minimal-dark-withimg-6"
+  ]
+}
