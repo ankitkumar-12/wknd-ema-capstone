@@ -1,9 +1,14 @@
+/* WKND footer — dark bar with brand, nav, social and disclaimer.
+   Decorate defensively: authors may add or omit any of these rows. */
 footer {
-  background-color: var(--light-color);
+  background-color: var(--text-color);
+  color: #ebebeb;
+  font-family: var(--body-font-family);
   font-size: var(--body-font-size-xs);
 }
 
 footer .footer > div {
+  box-sizing: border-box;
   margin: auto;
   max-width: 1200px;
   padding: 40px 24px 24px;
@@ -11,6 +16,64 @@ footer .footer > div {
 
 footer .footer p {
   margin: 0;
+}
+
+/* links */
+footer .footer a:any-link {
+  color: #ebebeb;
+  text-decoration: none;
+}
+
+footer .footer a:hover {
+  color: var(--wknd-yellow);
+  text-decoration: none;
+}
+
+/* copyright + disclaimer fine print (declared early to keep specificity order) */
+footer .footer .footer-disclaimer p,
+footer .footer p:last-of-type {
+  color: #f7f7f7;
+  font-size: 12px;
+  line-height: 1.35;
+}
+
+/* brand wordmark (text or image) */
+footer .footer .footer-brand,
+footer .footer > div:first-child p:first-child {
+  font-size: 34px;
+  font-weight: 700;
+  letter-spacing: 1px;
+  line-height: 1;
+}
+
+footer .footer img {
+  width: 128px;
+  height: auto;
+}
+
+/* nav links — horizontal, uppercase */
+footer .footer ul {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px 24px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+footer .footer ul a:any-link {
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+/* "Follow Us" heading */
+footer .footer h4 {
+  margin: 24px 0 12px;
+  color: #ebebeb;
+  font-family: var(--body-font-family);
+  font-size: var(--body-font-size-s);
+  font-weight: 600;
+  text-transform: uppercase;
 }
 
 @media (width >= 900px) {
