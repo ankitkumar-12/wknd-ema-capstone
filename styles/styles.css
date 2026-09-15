@@ -82,9 +82,16 @@ body.appear {
 }
 
 /* spacer reserving room for the fixed header: black utility bar (40px) plus
-   the white nav row (--nav-height), so page content is never hidden under it */
+   the white nav row. Reserve the expanded (at-top) nav height so page content
+   is never hidden under the header before it shrinks on scroll. */
 header {
   height: calc(40px + var(--nav-height));
+}
+
+@media (width >= 900px) {
+  header {
+    height: calc(40px + 128px);
+  }
 }
 
 header .header,

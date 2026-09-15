@@ -310,4 +310,14 @@ export default async function decorate(block) {
   if (utilityBar) navWrapper.append(utilityBar);
   navWrapper.append(nav);
   block.append(navWrapper);
+
+  // shrink-on-scroll: the header is taller at the top of the page and condenses
+  // to a compact state once scrolled (matches the source). Toggling a class lets
+  // the CSS transition the height/logo size smoothly in both directions.
+  const SHRINK_AT = 20;
+  const applyScrollState = () => {
+    navWrapper.classList.toggle('nav-scrolled', window.scrollY > SHRINK_AT);
+  };
+  applyScrollState();
+  window.addEventListener('scroll', applyScrollState, { passive: true });
 }
