@@ -67,13 +67,13 @@ header .nav-utility .nav-utility-lang::after {
 }
 
 @media (width >= 900px) {
-  /* black bar stays full-width, but its content is constrained to the same
-     centered column as the nav row so "SIGN IN" / "EN-US" line up with the
-     search box's right edge (matches source) instead of the viewport edge */
+  /* black bar spans the full viewport width edge-to-edge (no max-width/margin,
+     which would leave white corner gaps). The content is inset instead via
+     right padding that matches the nav row's centered 1264px column edge, so
+     "SIGN IN" / "EN-US" stay aligned with the page content. */
   header .nav-utility {
-    max-width: 1264px;
-    margin: 0 auto;
-    padding: 0 32px;
+    padding-right: max(32px, calc((100% - 1264px) / 2 + 32px));
+    padding-left: 32px;
   }
 }
 
