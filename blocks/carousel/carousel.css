@@ -39,7 +39,9 @@ main > .section > .carousel-wrapper {
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: center;
+
+  /* card sits low over the image, overlapping the bottom (matches source) */
+  justify-content: flex-end;
   position: relative;
   width: 100%;
   min-height: min(52vw, 640px);
@@ -56,14 +58,15 @@ main > .section > .carousel-wrapper {
   object-fit: cover;
 }
 
-/* caption panel — centered white overlay card over the full-bleed image */
+/* caption panel — horizontally-centered white overlay card sitting low over
+   the image and overlapping its bottom edge (matches source) */
 .carousel .carousel-slide .carousel-slide-content {
   z-index: 1;
   position: relative;
   box-sizing: border-box;
   width: var(--slide-content-width, auto);
-  max-width: min(640px, 90vw);
-  margin: 0 24px;
+  max-width: min(720px, 90vw);
+  margin: 0 24px -48px;
   padding: 32px;
   background-color: var(--background-color);
   color: var(--text-color);
