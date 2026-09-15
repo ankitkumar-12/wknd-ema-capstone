@@ -262,6 +262,16 @@ export default async function decorate(block) {
       utilityBar.className = 'nav-utility';
       utilityLinks.forEach((a) => {
         a.closest('p').remove();
+        // the language link (EN-US) gets a US flag icon before it and a
+        // dropdown caret after it, matching the source utility bar
+        const isLang = a.getAttribute('href') === '#language' || /en-us/i.test(a.textContent);
+        if (isLang) {
+          a.classList.add('nav-utility-lang');
+          const flag = document.createElement('span');
+          flag.className = 'nav-utility-flag';
+          flag.setAttribute('aria-hidden', 'true');
+          a.prepend(flag);
+        }
         utilityBar.append(a);
       });
     }
