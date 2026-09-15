@@ -24,7 +24,10 @@ main > .section > .carousel-wrapper {
 
 .carousel .carousel-slides {
   display: flex;
-  scroll-behavior: smooth;
+
+  /* instant slide change (no smooth-scroll animation) to match the source's
+     hard-swap carousel motion */
+  scroll-behavior: auto;
   scroll-snap-type: x mandatory;
   overflow: scroll clip;
 }
