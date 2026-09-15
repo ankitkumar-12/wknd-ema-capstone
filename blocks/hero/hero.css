@@ -83,10 +83,12 @@
 
   /* Featured-article hero (has an eyebrow): a CONTAINED two-column card —
      image on the left, grey text panel on the right — not a full-bleed
-     overlay. Detected via the eyebrow paragraph. */
+     overlay. Detected via the eyebrow paragraph. The IMAGE renders at its
+     natural aspect ratio and defines the row height; the grey text panel
+     stretches to match it (matching WKND's featured split panel). */
   .hero:has(.hero-content > p:first-child) {
     display: grid;
-    grid-template-columns: 1fr minmax(360px, 427px);
+    grid-template-columns: minmax(0, 709fr) minmax(360px, 427px);
     align-items: stretch;
 
     /* 1200 − 2×32 padding = 1136px inner, matching source's contained panel */
@@ -96,11 +98,22 @@
     min-height: 0;
   }
 
+  /* the block is rows>cells, so the grid items are the (unclassed) row
+     wrappers; make each a full-height flex column so its cell fills the row */
+  .hero:has(.hero-content > p:first-child) > div {
+    display: flex;
+    flex-direction: column;
+    min-height: 420px;
+  }
+
+  /* image cell fills the full row height; the image covers it so there is
+     never an empty gap below it */
   .hero:has(.hero-content > p:first-child) .hero-image {
     position: relative;
     inset: auto;
     z-index: 0;
-    min-height: 480px;
+    flex: 1 1 auto;
+    overflow: hidden;
   }
 
   .hero:has(.hero-content > p:first-child) .hero-image picture,
@@ -112,8 +125,10 @@
     object-fit: cover;
   }
 
+  /* grey panel: fills its row wrapper, text vertically centered */
   .hero:has(.hero-content > p:first-child) .hero-content {
     max-width: none;
+    flex: 1 1 auto;
     margin: 0;
     display: flex;
     flex-direction: column;
