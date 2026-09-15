@@ -1,5 +1,15 @@
 /* Carousel — full-width image slides with an optional caption panel,
    dot indicators and prev/next arrows. Structural/layout only. */
+
+/* full-bleed: break the carousel out of the section's max-width so the image
+   spans the full viewport width (matches source hero) */
+.carousel-wrapper {
+  width: 100vw;
+  max-width: 100vw;
+  margin-left: calc(50% - 50vw);
+  margin-right: calc(50% - 50vw);
+}
+
 .carousel .carousel-slides-container {
   position: relative;
 }
@@ -27,8 +37,8 @@
   scroll-snap-align: start;
   display: flex;
   flex-direction: column;
-  align-items: flex-start;
-  justify-content: flex-end;
+  align-items: center;
+  justify-content: center;
   position: relative;
   width: 100%;
   min-height: min(52vw, 640px);
@@ -45,13 +55,14 @@
   object-fit: cover;
 }
 
-/* caption panel — WKND overlays a light box near the bottom-left */
+/* caption panel — centered white overlay card over the full-bleed image */
 .carousel .carousel-slide .carousel-slide-content {
   z-index: 1;
   position: relative;
+  box-sizing: border-box;
   width: var(--slide-content-width, auto);
-  max-width: 640px;
-  margin: 0 0 40px;
+  max-width: min(640px, 90vw);
+  margin: 0 24px;
   padding: 32px;
   background-color: var(--background-color);
   color: var(--text-color);
@@ -136,6 +147,6 @@
 
 @media (width >= 900px) {
   .carousel .carousel-slide .carousel-slide-content {
-    margin-left: 68px;
+    padding: 48px;
   }
 }

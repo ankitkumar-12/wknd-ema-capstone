@@ -28,6 +28,7 @@ header .nav-utility a:any-link {
 
 header .nav-utility a:hover {
   color: var(--wknd-yellow);
+  text-decoration: none;
 }
 
 @media (width >= 900px) {
@@ -223,6 +224,12 @@ header nav .nav-sections a:any-link {
   color: var(--text-color);
 }
 
+/* no underline on hover for header nav links (source has none) */
+/* stylelint-disable-next-line no-descending-specificity */
+header nav a:hover {
+  text-decoration: none;
+}
+
 header nav .nav-sections ul > li > ul {
   margin-top: 0;
 }
@@ -242,6 +249,7 @@ header nav .nav-sections ul > li a[aria-current='page'] {
     display: block;
     visibility: visible;
     white-space: nowrap;
+    margin-left: auto; /* push nav items right, next to tools (matches source) */
   }
 
   header nav[aria-expanded='true'] .nav-sections {
