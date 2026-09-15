@@ -11,11 +11,39 @@ footer .footer > div {
   box-sizing: border-box;
   margin: auto;
   max-width: 1200px;
-  padding: 40px 24px 24px;
+  padding: 16px 24px 24px;
 }
 
 footer .footer p {
   margin: 0;
+}
+
+/* Top row: brand (left) | nav links | Follow Us + social (right), then the
+   copyright + disclaimer fine print span full width below (matches source).
+   The content is a flat list of siblings, so lay it out with flex-wrap and
+   force the two fine-print paragraphs onto their own full-width row. */
+@media (width >= 900px) {
+  footer .footer .default-content-wrapper {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 8px 48px;
+  }
+
+  /* nav link list takes the middle, pushing Follow Us to the right */
+  footer .footer .default-content-wrapper > ul {
+    flex: 1 1 auto;
+  }
+
+  /* copyright + disclaimer break to a full-width row beneath the top row */
+  footer .footer .default-content-wrapper > p:nth-last-of-type(-n+2) {
+    flex: 0 0 100%;
+  }
+
+  /* small top margin to separate the fine print from the top row */
+  footer .footer .default-content-wrapper > p:nth-last-of-type(2) {
+    margin-top: 16px;
+  }
 }
 
 /* links */

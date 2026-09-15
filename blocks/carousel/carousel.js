@@ -39,10 +39,12 @@ export function showSlide(block, slideIndex = 0) {
   if (!activeSlide) return;
 
   activeSlide.querySelectorAll('a').forEach((link) => link.removeAttribute('tabindex'));
+  // instant hard-swap between slides (no smooth scroll), matching the source's
+  // Core Components carousel which shows/hides slides with no slide animation
   block.querySelector('.carousel-slides').scrollTo({
     top: 0,
     left: activeSlide.offsetLeft,
-    behavior: 'smooth',
+    behavior: 'auto',
   });
 }
 

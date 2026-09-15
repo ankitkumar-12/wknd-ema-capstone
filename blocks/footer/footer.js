@@ -16,5 +16,13 @@ export default async function decorate(block) {
   const footer = document.createElement('div');
   while (fragment.firstElementChild) footer.append(fragment.firstElementChild);
 
+  // the WKND brand is a plain wordmark in the source footer, not a CTA — undo
+  // any .button promotion applied to it by decorateButtons
+  footer.querySelectorAll('a.button').forEach((a) => {
+    a.className = '';
+    const wrapper = a.closest('.button-container, .button-wrapper');
+    if (wrapper) wrapper.className = 'footer-brand';
+  });
+
   block.append(footer);
 }

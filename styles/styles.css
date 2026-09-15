@@ -81,8 +81,10 @@ body.appear {
   display: block;
 }
 
+/* spacer reserving room for the fixed header: black utility bar (40px) plus
+   the white nav row (--nav-height), so page content is never hidden under it */
 header {
-  height: var(--nav-height);
+  height: calc(40px + var(--nav-height));
 }
 
 header .header,

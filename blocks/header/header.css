@@ -1,9 +1,14 @@
-/* header and nav layout */
+/* header and nav layout — the whole header (black utility bar + white nav row)
+   stays pinned to the top of the viewport while the page scrolls, matching the
+   source. The spacer height on the <header> element (see styles.css) reserves
+   room so page content is never hidden underneath. */
 header .nav-wrapper {
   background-color: var(--background-color);
   width: 100%;
   z-index: 2;
   position: fixed;
+  top: 0;
+  left: 0;
   border-bottom: 1px solid var(--light-color);
 }
 
@@ -62,8 +67,13 @@ header .nav-utility .nav-utility-lang::after {
 }
 
 @media (width >= 900px) {
+  /* black bar spans the full viewport width edge-to-edge (no max-width/margin,
+     which would leave white corner gaps). The content is inset instead via
+     right padding that matches the nav row's centered 1264px column edge, so
+     "SIGN IN" / "EN-US" stay aligned with the page content. */
   header .nav-utility {
-    padding: 0 32px;
+    padding-right: max(32px, calc((100% - 1264px) / 2 + 32px));
+    padding-left: 32px;
   }
 }
 
@@ -92,10 +102,6 @@ header nav[aria-expanded='true'] {
 }
 
 @media (width >= 900px) {
-  header .nav-wrapper {
-    position: relative;
-  }
-
   header nav {
     display: flex;
     justify-content: space-between;
