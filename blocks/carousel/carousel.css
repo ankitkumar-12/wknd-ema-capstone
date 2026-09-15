@@ -59,14 +59,14 @@ main > .section > .carousel-wrapper {
 }
 
 /* caption panel — horizontally-centered white overlay card sitting low over
-   the image and overlapping its bottom edge (matches source) */
+   the image (matches source); small bottom offset keeps it above the dots */
 .carousel .carousel-slide .carousel-slide-content {
   z-index: 1;
   position: relative;
   box-sizing: border-box;
   width: var(--slide-content-width, auto);
   max-width: min(720px, 90vw);
-  margin: 0 24px -48px;
+  margin: 0 24px 40px;
   padding: 32px;
   background-color: var(--background-color);
   color: var(--text-color);
