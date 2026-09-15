@@ -81,6 +81,17 @@
     margin-bottom: 0;
   }
 
+  /* Plain hero (no eyebrow, e.g. "Climbing New Zealand"): the white content
+     card is a wide, low overlay spanning most of the slide width (matching the
+     source's ~1192px card), so the description wraps on ~2 lines instead of
+     being confined to the left half. Excludes the featured-article variant. */
+  .hero:not(:has(.hero-content > p:first-child)) .hero-content {
+    width: 100%;
+    max-width: min(1192px, calc(100% - 96px));
+    margin: 0 auto -48px;
+    padding: 40px 48px;
+  }
+
   /* Featured-article hero (has an eyebrow): a CONTAINED two-column card —
      image on the left, grey text panel on the right — not a full-bleed
      overlay. Detected via the eyebrow paragraph. The IMAGE renders at its
