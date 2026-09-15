@@ -1,3 +1,4 @@
+/* cache-bust: force code-bus resync so live picks up phase-12 decorateArticleAside */
 import {
   loadHeader,
   loadFooter,
