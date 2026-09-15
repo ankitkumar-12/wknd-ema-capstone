@@ -65,10 +65,11 @@ footer .footer p:last-of-type {
   line-height: 1.35;
 }
 
-/* brand wordmark (text or image) */
+/* brand wordmark (text or image) — larger than the header brand to match the
+   source footer's prominent WKND logo */
 footer .footer .footer-brand,
 footer .footer > div:first-child p:first-child {
-  font-size: 34px;
+  font-size: 44px;
   font-weight: 700;
   letter-spacing: 1px;
   line-height: 1;
@@ -104,8 +105,42 @@ footer .footer h4 {
   text-transform: uppercase;
 }
 
+/* social icons — a row of boxed icon buttons (light-grey squares with a dark
+   glyph), matching the source's "Follow Us" cluster */
+footer .footer .footer-social {
+  display: flex;
+  gap: 4px;
+}
+
+footer .footer a.footer-social-icon:any-link {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 48px;
+  height: 48px;
+  background-color: #ebebeb;
+  color: var(--text-color);
+}
+
+footer .footer a.footer-social-icon:hover {
+  background-color: var(--wknd-yellow);
+  color: var(--text-color);
+}
+
+footer .footer .footer-social-icon svg {
+  width: 20px;
+  height: 20px;
+  fill: currentcolor;
+}
+
 @media (width >= 900px) {
   footer .footer > div {
     padding: 40px 32px 24px;
+  }
+
+  /* keep "Follow Us" and the icon cluster together on the right of the top row,
+     vertically centered with each other */
+  footer .footer .default-content-wrapper > h4 {
+    margin: 0 12px 0 0;
   }
 }

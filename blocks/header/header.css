@@ -12,11 +12,13 @@ header .nav-wrapper {
   border-bottom: 1px solid var(--light-color);
 }
 
-/* black utility bar (Sign In + language) above the main nav row */
+/* black utility bar (Sign In + language) above the main nav row. On mobile the
+   two items split to opposite edges (Sign In left, EN-US right); on desktop
+   they group to the right (see the desktop override below). */
 header .nav-utility {
   display: flex;
   align-items: center;
-  justify-content: flex-end;
+  justify-content: space-between;
   gap: 24px;
   height: 40px;
   padding: 0 24px;
@@ -72,6 +74,7 @@ header .nav-utility .nav-utility-lang::after {
      right padding that matches the nav row's centered 1264px column edge, so
      "SIGN IN" / "EN-US" stay aligned with the page content. */
   header .nav-utility {
+    justify-content: flex-end;
     padding-right: max(32px, calc((100% - 1264px) / 2 + 32px));
     padding-left: 32px;
   }
