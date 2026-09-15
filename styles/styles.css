@@ -409,3 +409,48 @@ main .section.tabs-container .default-content-wrapper ul > li p:last-child {
   font-weight: 700;
   text-transform: uppercase;
 }
+
+/* article-detail: body left, "Share this Story" + related list as right sidebar */
+@media (width >= 900px) {
+  main .section.article-detail .default-content-wrapper {
+    display: grid;
+    grid-template-columns: 1fr 280px;
+    column-gap: 48px;
+    align-items: start;
+  }
+
+  /* body content flows in the left column */
+  main .section.article-detail .default-content-wrapper > :not(.article-aside) {
+    grid-column: 1;
+    min-width: 0;
+  }
+
+  /* the aside spans the right column, from the top */
+  main .section.article-detail .default-content-wrapper > .article-aside {
+    grid-column: 2;
+    grid-row: 1 / 100;
+    align-self: start;
+  }
+}
+
+main .section.article-detail .article-aside {
+  border-top: 2px solid var(--light-color);
+  padding-top: 16px;
+}
+
+main .section.article-detail .article-aside h5 {
+  margin: 0 0 16px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+main .section.article-detail .article-aside ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+main .section.article-detail .article-aside ul > li {
+  padding: 12px 0;
+  border-bottom: 1px solid var(--light-color);
+}

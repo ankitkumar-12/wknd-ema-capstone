@@ -146,6 +146,31 @@ function decorateButtons(main) {
 }
 
 /**
+ * On article-detail pages, moves the "Share this Story" heading and the
+ * related-stories list into a right-hand <aside> so the body + sidebar render
+ * in two columns (matching the source). No-ops when the heading is absent.
+ * @param {Element} main The main element
+ */
+function decorateArticleAside(main) {
+  const wrapper = [...main.querySelectorAll('.default-content-wrapper')].find((w) => [...w.querySelectorAll('h5')].some((h) => /share this story/i.test(h.textContent)));
+  if (!wrapper) return;
+  const heading = [...wrapper.querySelectorAll('h5')].find((h) => /share this story/i.test(h.textContent));
+  if (!heading) return;
+
+  const aside = document.createElement('aside');
+  aside.className = 'article-aside';
+  // move the Share heading and everything after it (the related list) into the aside
+  let node = heading;
+  while (node) {
+    const next = node.nextElementSibling;
+    aside.append(node);
+    node = next;
+  }
+  wrapper.append(aside);
+  wrapper.closest('.section')?.classList.add('article-detail');
+}
+
+/**
  * Decorates the main element.
  * @param {Element} main The main element
  */
@@ -156,6 +181,7 @@ export function decorateMain(main) {
   decorateSections(main);
   decorateBlocks(main);
   decorateButtons(main);
+  decorateArticleAside(main);
 }
 
 /**
