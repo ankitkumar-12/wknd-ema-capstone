@@ -48,33 +48,36 @@
   font-size: var(--body-font-size-xs);
 }
 
-/* grouped (tabbed) variant — category filter bar above the cards grid */
+/* grouped (tabbed) variant — category filter bar above the cards grid.
+   Matches the source: plain uppercase text tabs, and the selected tab is a
+   solid dark rectangle with white text (no underline/bottom-border). */
 .cards .cards-tabs {
   display: flex;
   flex-wrap: wrap;
-  gap: 8px 24px;
-  margin: 0 0 24px;
-  border-bottom: 1px solid var(--light-color);
+  gap: 4px;
+  margin: 18px 0 24px;
 }
 
 .cards .cards-tab {
   margin: 0;
   border: 0;
-  border-bottom: 2px solid transparent;
   border-radius: 0;
-  padding: 8px 0;
+  padding: 8px 16px;
   background: transparent;
   color: var(--text-color);
   font-family: var(--body-font-family);
   font-size: var(--body-font-size-xs);
-  font-weight: 700;
-  letter-spacing: 0.5px;
+  font-weight: 400;
+  letter-spacing: normal;
+  line-height: 1.5;
   text-transform: uppercase;
   cursor: pointer;
 }
 
+/* selected category: filled dark box + white text (matches source) */
 .cards .cards-tab[aria-selected='true'] {
-  border-bottom-color: var(--wknd-yellow);
+  background-color: var(--text-color);
+  color: var(--background-color);
 }
 
 @media (width >= 600px) {
