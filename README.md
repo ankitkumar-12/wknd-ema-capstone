@@ -43,34 +43,46 @@ served): `page-templates.json` (template + block-selector mappings), `parsers/` 
 table), `transformers/wknd-cleanup.js` (strips site chrome), and `import-<template>.js` orchestrators.
 Bundles, URL lists, reports, and imported `content/` are build artifacts and are git-ignored.
 
-## Search
+## Query index & index-driven listings
 
-The header search box filters pages by **title and description**. It loads its index from the
-first source that responds:
+The site is **index-driven**: the home "Recent Articles"/"Next Adventures" rails, the `/magazine`
+listing, and the `/adventures` listing all render from the query index via the
+[`cards`](blocks/cards/README.md) block — not from authored links. Publishing a new page under
+`/us/en/` makes it appear in the matching listing automatically, with no code change and no edit to
+any other page. The header search reads the same index.
+
+Both the listings and search load the index from the first source that responds:
 
 1. `/query-index.json` — the EDS-generated live index (preferred).
-2. [`us/en/search-index.json`](us/en/search-index.json) — a committed static fallback of the 26
-   `/us/en` pages, so search works even before a live index exists.
+2. [`us/en/search-index.json`](us/en/search-index.json) — a committed static fallback covering the
+   `/us/en` pages (title, description, image, category, lastModified), so the listings and search
+   work even before the live index resolves.
 
-Search is functional today via the static fallback. **No code change is needed to switch to the
-live index** — once `query-index.json` is published, the header prefers it automatically
-(`loadSearchIndex()` in [`blocks/header/header.js`](blocks/header/header.js)).
+The index definition lives in [`helix-query.yaml`](helix-query.yaml): a `query-index` over
+`/us/en/**` exposing `title`, `description`, `image` (og:image), `category` (page metadata) and
+`lastModified`, written to `/query-index.json`.
+
+> Note: on tools.aem.live-managed sites the repo `helix-query.yaml` is the source-of-truth
+> definition, but the index must also be **registered once** in the site config (below) for
+> `/query-index.json` to be generated. Until then the committed static fallback keeps everything
+> working — **no code change** is needed to switch over; `loadIndex()` in
+> [`blocks/cards/cards.js`](blocks/cards/cards.js) and `loadSearchIndex()` in
+> [`blocks/header/header.js`](blocks/header/header.js) prefer the live index automatically.
 
 ### Enabling the live query index (one-time, site-admin)
 
-`helix-query.yaml` is retired; index definitions live at
-[tools.aem.live](https://tools.aem.live), not in the repo. A site admin needs to:
+1. Open the site config for `ankitkumar-12/wknd-ema-capstone` at
+   [tools.aem.live](https://tools.aem.live) → **Configuration → Indices**.
+2. Register a **`query-index`** matching [`helix-query.yaml`](helix-query.yaml): scope `/us/en/**`,
+   properties `title`, `description`, `image`, `category`, `lastModified`, target
+   `/query-index.json`.
+3. Save, then reindex — bulk **Index** over `/us/en` in the tools UI, or via the admin API
+   (`POST https://admin.hlx.page/index/ankitkumar-12/wknd-ema-capstone/main/*`). New/updated pages
+   are indexed automatically on publish thereafter.
 
-1. Open the site config for `ankitkumar-12/wknd-ema-capstone` at tools.aem.live →
-   **Configuration → Indices**.
-2. Add a **`query-index`** scoped to `/us/en/**` exposing the `title` and `description`
-   properties (the fields the header search reads).
-3. Save, then reindex — bulk **Index** over `/us/en` in the tools UI, or trigger it via the admin
-   API (`POST https://admin.hlx.page/index/ankitkumar-12/wknd-ema-capstone/main/*`). New/updated
-   pages are indexed automatically on publish thereafter.
-
-Once `query-index.json` resolves, the static `us/en/search-index.json` becomes a redundant
-fallback and can be removed if desired.
+Category comes from each page's `Category` metadata (stamped at import by
+`tools/importer/category-map.js`; authors maintain it in DA afterwards). Once `/query-index.json`
+resolves, the static `us/en/search-index.json` becomes a redundant fallback.
 
 ### Refreshing the static index
 
