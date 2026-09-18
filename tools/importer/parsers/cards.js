@@ -1,64 +1,54 @@
 /* eslint-disable */
 /* global WebImporter */
+
 /**
- * Parser for variant: cards (base block: cards)
- * Source: https://wknd.site/us/en/magazine.html  (selector: .image-list.list)
- * Generated: 2026-09-14
+ * Parser for the index-driven `cards` block (base block: cards).
  *
- * Library convention: 2 columns, one row per card —
- *   cell 1 = image (mandatory), cell 2 = text (title as heading, description, optional CTA).
- * Source: AEM Core Components image-list — .cmp-image-list__item with
- *   .cmp-image-list__item-image (img), .cmp-image-list__item-title-link and
- *   .cmp-image-list__item-description.
+ * The migrated cards block is EMPTY at author time — it renders from
+ * /query-index.json at runtime. So instead of emitting one row per hardcoded
+ * card, this parser emits an empty block plus a small two-column config table:
+ *
+ *   | Cards  |
+ *   | path   | /us/en/magazine/ |
+ *   | limit  | 4                |     (omitted on the listing page itself)
+ *
+ * The `path` prefix is derived automatically from the authored card links, so
+ * publishing a new page under that prefix makes it appear with no further edit.
  */
-export default function parse(element, { document }) {
-  // Prefer image-list items; fall back to generic list items / rows.
-  let items = Array.from(element.querySelectorAll('.cmp-image-list__item'));
-  if (!items.length) items = Array.from(element.querySelectorAll('li'));
+export default function parse(element, { document, params }) {
+  // collect the internal /us/en links the source cards point at
+  const links = Array.from(element.querySelectorAll('a[href]'))
+    .map((a) => a.getAttribute('href'))
+    .filter((h) => h && h.startsWith('/us/en/'))
+    .map((h) => h.replace(/\.html?(?=$|[?#])/, ''));
 
-  const cells = [];
-
-  items.forEach((item) => {
-    // Image cell
-    const img = item.querySelector('img');
-    const imageCell = img || '';
-
-    // Text cell: title (linked heading) + description
-    const body = [];
-    const titleLink = item.querySelector('.cmp-image-list__item-title-link');
-    const titleEl = item.querySelector('.cmp-image-list__item-title, [class*="title"]');
-    const titleText = (titleEl ? titleEl.textContent : (titleLink ? titleLink.textContent : (img ? img.getAttribute('alt') : '')) || '').trim();
-    if (titleText) {
-      const h = document.createElement('h3');
-      const href = titleLink && titleLink.getAttribute('href');
-      if (href) {
-        const a = document.createElement('a');
-        a.href = href;
-        a.textContent = titleText;
-        h.append(a);
-      } else {
-        h.textContent = titleText;
-      }
-      body.push(h);
-    }
-    const descEl = item.querySelector('.cmp-image-list__item-description, [class*="description"], p');
-    if (descEl && descEl.textContent.trim()) {
-      const p = document.createElement('p');
-      p.textContent = descEl.textContent.trim();
-      body.push(p);
-    }
-
-    if (img || body.length) {
-      cells.push([imageCell, body]);
-    }
-  });
-
-  // Empty-block guard
-  if (!cells.length) {
+  if (!links.length) {
+    // nothing to key off — drop the block rather than emit an empty shell
     element.replaceWith(...element.childNodes);
     return;
   }
 
-  const block = WebImporter.Blocks.createBlock(document, { name: 'cards', cells });
+  // common directory prefix of the linked detail pages, e.g. "/us/en/magazine/"
+  const dirs = links.map((h) => h.slice(0, h.lastIndexOf('/') + 1));
+  const path = dirs.sort((a, b) => a.length - b.length)[0];
+
+  const config = [['path', path]];
+
+  // if this block lives on the listing page for that prefix, show everything;
+  // otherwise it is a capped rail on another page — preserve the authored count
+  const pagePath = (() => {
+    try {
+      return new URL(params.originalURL).pathname.replace(/\.html?$/, '').replace(/\/$/, '');
+    } catch (e) {
+      return '';
+    }
+  })();
+  const listingPath = path.replace(/\/$/, '');
+  if (pagePath !== listingPath) {
+    const uniqueCount = new Set(links).size;
+    config.push(['limit', String(uniqueCount)]);
+  }
+
+  const block = WebImporter.Blocks.createBlock(document, { name: 'Cards', cells: config });
   element.replaceWith(block);
 }
