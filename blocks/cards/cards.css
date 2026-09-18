@@ -13,6 +13,11 @@
 .cards > ul > li,
 .cards .cards-panel > ul > li {
   background-color: transparent;
+
+  /* allow grid items to shrink below their content's intrinsic width so the
+     nowrap description can clamp with an ellipsis instead of stretching the
+     column */
+  min-width: 0;
 }
 
 .cards .cards-card-image {
@@ -43,9 +48,19 @@
   line-height: 1.25;
 }
 
+/* description — muted uppercase grey, clamped to a single line with a trailing
+   ellipsis when it overflows (matches source) */
 .cards .cards-card-body p {
   margin: 0;
+  overflow: hidden;
+  color: var(--dark-color);
   font-size: var(--body-font-size-xs);
+  font-weight: 400;
+  letter-spacing: normal;
+  line-height: 1.5;
+  text-transform: uppercase;
+  white-space: nowrap;
+  text-overflow: ellipsis;
 }
 
 /* grouped (tabbed) variant — category filter bar above the cards grid.
