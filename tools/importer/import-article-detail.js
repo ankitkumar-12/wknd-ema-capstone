@@ -7,6 +7,7 @@ import quoteParser from './parsers/quote.js';
 
 // TRANSFORMER IMPORTS
 import wkndCleanupTransformer from './transformers/wknd-cleanup.js';
+import { stampCategory } from './category-map.js';
 
 const parsers = {
   breadcrumbs: breadcrumbsParser,
@@ -96,6 +97,9 @@ export default {
     WebImporter.rules.createMetadata(main, document);
     WebImporter.rules.transformBackgroundImages(main, document);
     WebImporter.rules.adjustImageUrls(main, url, params.originalURL);
+
+    // stamp a Category metadata field (indexed + used by the cards listings)
+    stampCategory(main, document, new URL(params.originalURL).pathname);
 
     const rawPath = new URL(params.originalURL).pathname
       .replace(/\/$/, '')

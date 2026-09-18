@@ -1,0 +1,41 @@
+version: 1
+
+# Query index for the WKND /us/en locale. Powers the index-driven listing
+# surfaces (home "Recent Articles" / "Next Adventures" rails, /magazine and
+# /adventures) and the header search — all of which read /query-index.json.
+#
+# NOTE: on tools.aem.live-managed sites the index definition also has to be
+# registered in the site config (Configuration → Indices) and reindexed once;
+# this file is the source-of-truth definition and is read by the indexer.
+# Publishing a new page under /us/en/ then adds it to the index automatically,
+# so the listings pick it up with no code change and no edit to any other page.
+indices:
+  query-index:
+    include:
+      - /us/en/**
+    exclude:
+      # listing/section landing pages are not themselves list items
+      - /us/en/magazine
+      - /us/en/adventures
+    target: /query-index.json
+    properties:
+      title:
+        select: head > meta[property="og:title"]
+        value: |
+          attribute(el, 'content')
+      description:
+        select: head > meta[name="description"]
+        value: |
+          attribute(el, 'content')
+      image:
+        select: head > meta[property="og:image"]
+        value: |
+          match(attribute(el, 'content'), 'https:\/\/[^"]*')
+      category:
+        select: head > meta[name="category"]
+        value: |
+          attribute(el, 'content')
+      lastModified:
+        select: none
+        value: |
+          parseTimestamp(headers('last-modified'), 'ddd, DD MMM YYYY hh:mm:ss GMT')

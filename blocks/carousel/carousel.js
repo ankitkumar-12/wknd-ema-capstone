@@ -1,3 +1,5 @@
+import { createOptimizedPicture } from '../../scripts/aem.js';
+
 function updateActiveSlide(slide) {
   const block = slide.closest('.carousel');
   const slideIndex = parseInt(slide.dataset.slideIndex, 10);
@@ -90,6 +92,15 @@ function createSlide(row, slideIndex, carouselId) {
     }
     column.classList.add(`carousel-slide-${colIdx === 0 ? 'image' : 'content'}`);
     slide.append(column);
+  });
+
+  // Route slide images through createOptimizedPicture so they ship with an
+  // optimized, sized srcset — the browser reserves space and avoids layout
+  // shift (CLS). The first slide is above the fold (LCP), so load it eagerly.
+  slide.querySelectorAll('picture > img').forEach((img) => {
+    img.closest('picture').replaceWith(
+      createOptimizedPicture(img.src, img.alt, slideIndex === 0),
+    );
   });
 
   // a slide with only a content column (no image) is still valid; label if a heading exists

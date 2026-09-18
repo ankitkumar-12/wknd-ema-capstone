@@ -18,10 +18,10 @@ footer .footer p {
   margin: 0;
 }
 
-/* Top row: brand (left) | nav links | Follow Us + social (right), then the
-   copyright + disclaimer fine print span full width below (matches source).
-   The content is a flat list of siblings, so lay it out with flex-wrap and
-   force the two fine-print paragraphs onto their own full-width row. */
+/* Top row: brand (left) | grouped nav columns | Follow Us + social (right),
+   then the copyright + disclaimer fine print span full width below (matches
+   source). The content is a flat list of siblings, so lay it out with flex-wrap
+   and force the two fine-print paragraphs onto their own full-width row. */
 @media (width >= 900px) {
   footer .footer .default-content-wrapper {
     display: flex;
@@ -30,18 +30,19 @@ footer .footer p {
     gap: 8px 48px;
   }
 
-  /* nav link list takes the middle, pushing Follow Us to the right */
+  /* grouped nav takes the middle, pushing Follow Us to the right */
   footer .footer .default-content-wrapper > ul {
     flex: 1 1 auto;
   }
 
-  /* copyright + disclaimer break to a full-width row beneath the top row */
-  footer .footer .default-content-wrapper > p:nth-last-of-type(-n+2) {
+  /* the fine-print paragraphs break to a full-width row beneath the top row */
+  footer .footer .default-content-wrapper > p:nth-last-of-type(-n+3):not(.footer-social) {
     flex: 0 0 100%;
   }
 
-  /* small top margin to separate the fine print from the top row */
-  footer .footer .default-content-wrapper > p:nth-last-of-type(2) {
+  /* small top margin to separate the first fine-print line from the top row */
+  /* stylelint-disable-next-line no-descending-specificity */
+  footer .footer .default-content-wrapper > p:nth-last-of-type(3) {
     margin-top: 16px;
   }
 }
@@ -57,12 +58,18 @@ footer .footer a:hover {
   text-decoration: none;
 }
 
-/* copyright + disclaimer fine print (declared early to keep specificity order) */
+/* copyright + disclaimer fine print — the trailing paragraphs (copyright, the
+   attribution disclaimer with its inline links, and the Adobe Stock line) */
 footer .footer .footer-disclaimer p,
-footer .footer p:last-of-type {
+footer .footer p:nth-last-of-type(-n+3):not(.footer-social) {
   color: #f7f7f7;
   font-size: 12px;
   line-height: 1.35;
+}
+
+/* inline links inside the fine print keep the small size + underline on hover */
+footer .footer p:nth-last-of-type(-n+3) a:any-link {
+  text-decoration: underline;
 }
 
 /* brand wordmark (text or image) — larger than the header brand to match the
@@ -80,20 +87,57 @@ footer .footer img {
   height: auto;
 }
 
-/* nav links — horizontal, uppercase */
+/* grouped nav — the outer list is a row of link columns; each top-level item
+   is a column heading with its nested list of links stacked beneath it
+   (matches the source's grouped footer columns) */
 footer .footer ul {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 8px 24px;
   margin: 0;
   padding: 0;
   list-style: none;
 }
 
+/* top-level list = the row of columns */
+footer .footer > div > ul,
+footer .footer .default-content-wrapper > ul {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px 48px;
+}
+
+/* nested list = the links stacked within a column */
+/* stylelint-disable-next-line no-descending-specificity */
+footer .footer ul ul {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-top: 12px;
+}
+
+/* stylelint-disable-next-line no-descending-specificity */
 footer .footer ul a:any-link {
   text-transform: uppercase;
   letter-spacing: 0.5px;
 }
+
+/* a group heading (top-level link, e.g. "Home") — the parser may wrap it in a
+   <p>, so target both li>a and li>p>a. Small uppercase group label, not the
+   large brand wordmark. */
+/* stylelint-disable no-descending-specificity */
+footer .footer > div > ul > li > p {
+  margin: 0;
+  font-size: var(--body-font-size-xs);
+}
+
+footer .footer > div > ul > li > a:any-link,
+footer .footer > div > ul > li > p > a:any-link,
+footer .footer .default-content-wrapper > ul > li > a:any-link,
+footer .footer .default-content-wrapper > ul > li > p > a:any-link {
+  font-size: var(--body-font-size-xs);
+  font-weight: 700;
+  line-height: 1.25;
+  text-decoration: none;
+}
+/* stylelint-enable no-descending-specificity */
 
 /* "Follow Us" heading */
 footer .footer h4 {

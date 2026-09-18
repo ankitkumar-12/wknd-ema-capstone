@@ -4,29 +4,21 @@ import { loadFragment } from '../fragment/fragment.js';
 // media query match that indicates mobile/tablet width
 const isDesktop = window.matchMedia('(min-width: 900px)');
 
-// path (relative to the site root) of the searchable index
-const SEARCH_INDEX_PATH = '/us/en/search-index.json';
-
 /**
- * Loads the search index, preferring the EDS-generated query-index.json and
- * falling back to the committed static index. Cached after first load.
+ * Loads the search index from the live query index (single source of truth).
+ * Cached after first load.
  * @returns {Promise<Array>} array of { path, title, description }
  */
 let searchIndexPromise;
 async function loadSearchIndex() {
   if (searchIndexPromise) return searchIndexPromise;
   searchIndexPromise = (async () => {
-    const sources = ['/query-index.json', SEARCH_INDEX_PATH];
-    for (let i = 0; i < sources.length; i += 1) {
-      try {
-        // eslint-disable-next-line no-await-in-loop
-        const resp = await fetch(sources[i]);
-        if (!resp.ok) continue; // eslint-disable-line no-continue
-        // eslint-disable-next-line no-await-in-loop
-        const json = await resp.json();
-        if (json && Array.isArray(json.data) && json.data.length) return json.data;
-      } catch (e) { /* try next source */ }
-    }
+    try {
+      const resp = await fetch('/query-index.json');
+      if (!resp.ok) return [];
+      const json = await resp.json();
+      if (json && Array.isArray(json.data)) return json.data;
+    } catch (e) { /* index unavailable */ }
     return [];
   })();
   return searchIndexPromise;
