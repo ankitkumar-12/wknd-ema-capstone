@@ -35,6 +35,43 @@ async function loadIndex() {
   return indexPromise;
 }
 
+// Fallback path→category map. The query index is the source of truth for
+// `category`, but on tools.aem.live-managed sites that property only appears
+// once it is registered in the index config and reindexed. Until then the
+// index omits `category` and the /adventures tabs would collapse to just
+// "All". This served map (generated from tools/importer/category-map.js, the
+// same values stamped as each page's `Category` metadata) lets the block
+// backfill the category so the tabs work regardless. Real index values always
+// take precedence — see mergeCategories().
+let categoryMapPromise;
+async function loadCategoryMap() {
+  if (categoryMapPromise) return categoryMapPromise;
+  categoryMapPromise = (async () => {
+    try {
+      const resp = await fetch('/category-map.json');
+      if (!resp.ok) return {};
+      const json = await resp.json();
+      if (json && json.data && typeof json.data === 'object') return json.data;
+    } catch (e) { /* map unavailable */ }
+    return {};
+  })();
+  return categoryMapPromise;
+}
+
+/**
+ * Returns index rows with `category` backfilled from the fallback map for any
+ * row the index left without one. Rows that already carry a `category` from the
+ * index are left untouched (the index remains the source of truth).
+ */
+function mergeCategories(data, map) {
+  if (!map || !Object.keys(map).length) return data;
+  return data.map((row) => {
+    if (row.category || !row.path) return row;
+    const fallback = map[row.path] || map[row.path.replace(/\/$/, '')];
+    return fallback ? { ...row, category: fallback } : row;
+  });
+}
+
 /** Split a multi-value metadata string ("Cycling, Travel") into a clean array. */
 function toCategories(value) {
   return (value || '')
@@ -117,7 +154,13 @@ export default async function decorate(block) {
   // to query, so render nothing rather than an empty shell.
   if (!cfg.path) return;
 
-  const data = await loadIndex();
+  let data = await loadIndex();
+
+  // Backfill `category` from the served fallback map when the index omits it,
+  // but only when a category is actually needed (grouping or filtering).
+  if (cfg.group === 'category' || cfg.category) {
+    data = mergeCategories(data, await loadCategoryMap());
+  }
 
   // grouped variant: render one tab per category with its own cards grid
   if (cfg.group === 'category') {

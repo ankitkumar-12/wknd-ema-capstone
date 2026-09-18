@@ -1,0 +1,26 @@
+{
+  "note": "Path → Category fallback for the index-driven cards block. Used ONLY when the query index does not expose a `category` column (the tools.aem.live-managed index must register `category: head > meta[name=\"category\"]` for that). Generated from tools/importer/category-map.js; each page also carries the same value as `Category` metadata. Once the managed index exposes `category`, this file is harmless (real index values take precedence) and can be removed.",
+  "data": {
+    "/us/en/adventures/bali-surf-camp": "Surfing",
+    "/us/en/adventures/beervana-portland": "Travel",
+    "/us/en/adventures/climbing-new-zealand": "Climbing",
+    "/us/en/adventures/colorado-rock-climbing": "Climbing",
+    "/us/en/adventures/cycling-southern-utah": "Cycling",
+    "/us/en/adventures/cycling-tuscany": "Cycling, Travel",
+    "/us/en/adventures/downhill-skiing-wyoming": "Skiing",
+    "/us/en/adventures/gastronomic-marais-tour": "Travel",
+    "/us/en/adventures/napa-wine-tasting": "Travel",
+    "/us/en/adventures/riverside-camping-australia": "Travel",
+    "/us/en/adventures/ski-touring-mont-blanc": "Skiing",
+    "/us/en/adventures/surf-camp-costa-rica": "Surfing",
+    "/us/en/adventures/tahoe-skiing": "Skiing",
+    "/us/en/adventures/west-coast-cycling": "Cycling",
+    "/us/en/adventures/whistler-mountain-biking": "Cycling",
+    "/us/en/adventures/yosemite-backpacking": "Travel",
+    "/us/en/magazine/arctic-surfing": "Magazine",
+    "/us/en/magazine/guide-la-skateparks": "Magazine",
+    "/us/en/magazine/san-diego-surf": "Magazine",
+    "/us/en/magazine/ski-touring": "Magazine",
+    "/us/en/magazine/western-australia": "Magazine"
+  }
+}
