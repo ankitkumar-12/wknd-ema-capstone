@@ -27,7 +27,7 @@
 .cards > ul > li img,
 .cards .cards-panel > ul > li img {
   width: 100%;
-  aspect-ratio: 4 / 3;
+  aspect-ratio: 13 / 10;
   object-fit: cover;
 }
 

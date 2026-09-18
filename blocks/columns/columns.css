@@ -31,3 +31,85 @@
     order: unset;
   }
 }
+
+/* members-teaser variant — the magazine "Members Only" promos: compact teaser
+   cards (content above a small image), laid out as a left-aligned two-up grid,
+   matching the source. */
+.columns.members-teaser > div {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 24px;
+  align-items: start;
+}
+
+/* Each column is a teaser card. The generated markup is:
+     <div>
+       <p><picture>…</picture></p>   ← image (parser wraps img in a p)
+       <h3>title</h3>
+       <p>description</p>
+       <p>Read More</p>
+     </div>
+   The source shows content ABOVE the image, so flex-column + ordering puts the
+   heading/description/action first and the image last. */
+.columns.members-teaser > div > div {
+  display: flex;
+  flex-direction: column;
+  order: unset;
+  flex: unset;
+}
+
+/* heading + text paragraphs sit above the image */
+.columns.members-teaser > div > div > h3 {
+  order: 1;
+  margin: 9px 0;
+  font-family: var(--body-font-family);
+  font-size: 18px;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+  line-height: 1.25;
+}
+
+.columns.members-teaser > div > div > p {
+  order: 2;
+  margin: 0;
+  color: var(--dark-color);
+  font-size: var(--body-font-size-xs);
+  line-height: 1.5;
+}
+
+/* the image paragraph renders after the text, at the source's compact size */
+.columns.members-teaser > div > div > p:has(picture) {
+  order: 3;
+  margin: 0;
+}
+
+/* the "Read More" action — uppercase muted grey, spaced from the description.
+   Scoped to a p WITHOUT a picture so it never matches the image paragraph. */
+.columns.members-teaser > div > div > p:last-child:not(:has(picture)) {
+  margin: 14px 0;
+  text-transform: uppercase;
+}
+
+.columns.members-teaser > div > div > p:last-child:not(:has(picture)) a {
+  color: var(--dark-color);
+  text-decoration: none;
+}
+
+.columns.members-teaser > div > div > p picture img {
+  display: block;
+  width: 100%;
+  max-width: 360px;
+  aspect-ratio: 9 / 5;
+  object-fit: cover;
+}
+
+@media (width >= 900px) {
+  /* two teasers side by side, each ~1/3 width and left-aligned (matches the
+     source's grid-column-4 teasers) */
+  .columns.members-teaser > div {
+    grid-template-columns: repeat(2, minmax(0, 384px));
+    justify-content: start;
+    align-items: start;
+  }
+}
