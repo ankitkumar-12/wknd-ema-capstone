@@ -1,5 +1,5 @@
 // eslint-disable-next-line import/no-unresolved
-import { toClassName } from '../../scripts/aem.js';
+import { toClassName, createOptimizedPicture } from '../../scripts/aem.js';
 
 export default async function decorate(block) {
   // build tablist
@@ -42,6 +42,15 @@ export default async function decorate(block) {
     });
     tablist.append(button);
     tab.remove();
+  });
+
+  // Route tab-panel images through createOptimizedPicture so they ship with an
+  // optimized, sized srcset — the browser reserves space and avoids layout
+  // shift (CLS). Tab content is below the fold, so keep it lazy.
+  block.querySelectorAll('.tabs-panel picture > img').forEach((img) => {
+    img.closest('picture').replaceWith(
+      createOptimizedPicture(img.src, img.alt, false),
+    );
   });
 
   block.prepend(tablist);
