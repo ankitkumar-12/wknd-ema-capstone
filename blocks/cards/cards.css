@@ -88,6 +88,5 @@
   .cards > ul,
   .cards .cards-panel > ul {
     grid-template-columns: repeat(4, 1fr);
-    gap: 0;
   }
 }
