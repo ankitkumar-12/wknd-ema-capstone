@@ -4,6 +4,7 @@
 // PARSER IMPORTS
 import heroParser from './parsers/hero.js';
 import cardsParser from './parsers/cards.js';
+import columnsParser from './parsers/columns.js';
 
 // TRANSFORMER IMPORTS
 import wkndCleanupTransformer from './transformers/wknd-cleanup.js';
@@ -11,6 +12,7 @@ import wkndCleanupTransformer from './transformers/wknd-cleanup.js';
 const parsers = {
   hero: heroParser,
   cards: cardsParser,
+  columns: columnsParser,
 };
 
 const transformers = [wkndCleanupTransformer];
@@ -33,6 +35,12 @@ const PAGE_TEMPLATE = {
       "name": "cards",
       "instances": [
         ".image-list.list"
+      ]
+    },
+    {
+      "name": "columns",
+      "instances": [
+        ".teaser.cmp-teaser--list.cmp-teaser--secure"
       ]
     }
   ],

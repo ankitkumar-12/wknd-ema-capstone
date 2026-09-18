@@ -31,3 +31,115 @@
     order: unset;
   }
 }
+
+/* ---------------------------------------------------------------------------
+   members-teaser variant — the magazine "Members Only" locked promos.
+   Two teaser cards side by side; each card is text (title with a yellow lock
+   badge, uppercase grey description, grey "Read More" button) above a compact
+   teaser image. Matches the source. The generated markup per column is:
+     <div>
+       <h3>title</h3>
+       <p>description</p>
+       <p>Read More</p>       (link or plain text)
+       <p><picture>…</picture></p>
+     </div>
+--------------------------------------------------------------------------- */
+.columns.members-teaser > div {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 32px 24px;
+  align-items: start;
+}
+
+.columns.members-teaser > div > div {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  order: unset;
+  flex: unset;
+}
+
+/* title — uppercase bold sans-serif, with a yellow lock badge before it */
+.columns.members-teaser > div > div > h3 {
+  order: 1;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin: 9px 0;
+  font-family: var(--body-font-family);
+  font-size: 18px;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+  line-height: 1.25;
+  text-transform: uppercase;
+  color: var(--text-color);
+}
+
+/* yellow lock badge: a WKND-yellow square with a black padlock glyph */
+.columns.members-teaser > div > div > h3::before {
+  content: '';
+  flex: 0 0 auto;
+  width: 28px;
+  height: 28px;
+  background-color: var(--wknd-yellow);
+  background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="%23202020" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="11" width="14" height="10" rx="1.5" fill="%23202020" stroke="none"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/></svg>');
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: 18px 18px;
+}
+
+/* description — uppercase muted grey (the paragraph right after the title) */
+.columns.members-teaser > div > div > h3 + p {
+  order: 2;
+  margin: 0;
+  color: var(--dark-color);
+  font-family: var(--body-font-family);
+  font-size: var(--body-font-size-xs);
+  line-height: 1.5;
+  text-transform: uppercase;
+}
+
+/* image paragraph renders last, compact (matches source 360×200) */
+.columns.members-teaser > div > div > p:has(picture) {
+  order: 4;
+  margin: 14px 0 0;
+  padding: 0;
+  background: none;
+  text-transform: none;
+}
+
+/* "Read More" — a grey button box, uppercase. It is the text paragraph that
+   follows the description (has no picture, and its previous sibling is a p). */
+.columns.members-teaser > div > div > p + p:not(:has(picture)) {
+  order: 3;
+  align-self: flex-start;
+  margin: 14px 0;
+  padding: 7px 14px;
+  background-color: #ebebeb;
+  color: var(--dark-color);
+  font-size: var(--body-font-size-xs);
+  text-transform: uppercase;
+}
+
+.columns.members-teaser > div > div > p + p:not(:has(picture)) a {
+  color: var(--dark-color);
+  text-decoration: none;
+}
+
+.columns.members-teaser > div > div > p picture img {
+  display: block;
+  width: 100%;
+  max-width: 360px;
+  aspect-ratio: 9 / 5;
+  object-fit: cover;
+}
+
+@media (width >= 900px) {
+  /* two teasers side by side, each ~1/3 width and left-aligned (matches the
+     source's grid-column-4 teasers) */
+  .columns.members-teaser > div {
+    grid-template-columns: repeat(2, minmax(0, 384px));
+    justify-content: start;
+    align-items: start;
+  }
+}
