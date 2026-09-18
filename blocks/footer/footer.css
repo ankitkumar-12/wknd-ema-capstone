@@ -119,11 +119,15 @@ footer .footer ul a:any-link {
   letter-spacing: 0.5px;
 }
 
-/* a group heading (top-level link, e.g. "Home") */
+/* a group heading (top-level link, e.g. "Home") — small uppercase like the
+   source's footer nav group label, not the large brand wordmark */
 /* stylelint-disable-next-line no-descending-specificity */
 footer .footer > div > ul > li > a:any-link,
 footer .footer .default-content-wrapper > ul > li > a:any-link {
+  font-size: var(--body-font-size-xs);
   font-weight: 700;
+  line-height: 1.25;
+  text-decoration: none;
 }
 
 /* "Follow Us" heading */
