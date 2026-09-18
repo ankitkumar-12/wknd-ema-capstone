@@ -1,9 +1,9 @@
 # cards
 
 Index-driven **cards** block. Renders a teaser grid (image + title + description)
-from the query index (`/query-index.json`, with a static
-`/us/en/search-index.json` fallback) — not from hardcoded links. Publishing a new
-page under the configured path prefix makes it appear automatically.
+from the live query index (`/query-index.json`) — not from hardcoded links.
+Publishing a new page under the configured path prefix makes it appear
+automatically.
 
 ## Authoring (Document Authoring)
 

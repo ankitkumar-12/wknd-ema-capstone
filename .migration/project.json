@@ -1,0 +1,12 @@
+{
+  "sites": {
+    "wknd-ema-capstone": {
+      "previewOrg": "ankitkumar-12",
+      "previewSite": "wknd-ema-capstone",
+      "contentHostUrl": "https://content.da.live/ankitkumar-12/wknd-ema-capstone/"
+    }
+  },
+  "features": [
+    "site-planning"
+  ]
+}

@@ -18,22 +18,18 @@ import { createOptimizedPicture, readBlockConfig } from '../../scripts/aem.js';
  * makes it appear here automatically — no code change, no edit to any page.
  */
 
-// cache the index fetch across every cards block on the page
+// cache the index fetch across every cards block on the page. The live query
+// index (/query-index.json) is the single source of truth.
 let indexPromise;
 async function loadIndex() {
   if (indexPromise) return indexPromise;
   indexPromise = (async () => {
-    const sources = ['/query-index.json', '/us/en/search-index.json'];
-    for (let i = 0; i < sources.length; i += 1) {
-      try {
-        // eslint-disable-next-line no-await-in-loop
-        const resp = await fetch(sources[i]);
-        if (!resp.ok) continue; // eslint-disable-line no-continue
-        // eslint-disable-next-line no-await-in-loop
-        const json = await resp.json();
-        if (json && Array.isArray(json.data) && json.data.length) return json.data;
-      } catch (e) { /* try next source */ }
-    }
+    try {
+      const resp = await fetch('/query-index.json');
+      if (!resp.ok) return [];
+      const json = await resp.json();
+      if (json && Array.isArray(json.data)) return json.data;
+    } catch (e) { /* index unavailable */ }
     return [];
   })();
   return indexPromise;
