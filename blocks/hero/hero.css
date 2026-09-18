@@ -85,6 +85,24 @@
      card is a wide, low overlay spanning most of the slide width (matching the
      source's ~1192px card), so the description wraps on ~2 lines instead of
      being confined to the left half. Excludes the featured-article variant. */
+
+  /* The block is rows>cells, so the content cell sits inside an unclassed row
+     wrapper. Because .hero is a flex column with align-items: flex-start, that
+     wrapper otherwise shrink-wraps to its text — collapsing the centered card
+     to a narrow left-aligned panel. Force each row wrapper full-width so the
+     card's `margin: 0 auto` centers across the whole slide. */
+  .hero:not(:has(.hero-content > p:first-child)) > div {
+    width: 100%;
+  }
+
+  /* The card overhangs the image bottom by 48px (its negative bottom margin),
+     but that overhang isn't part of the hero's box — so reserve 48px below the
+     hero to keep the following content (e.g. the /adventures "Current
+     Adventures" heading) from flowing up into the card and overlapping it. */
+  .hero:not(:has(.hero-content > p:first-child)) {
+    margin-bottom: 48px;
+  }
+
   .hero:not(:has(.hero-content > p:first-child)) .hero-content {
     width: 100%;
     max-width: min(1192px, calc(100% - 96px));

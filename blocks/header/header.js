@@ -282,6 +282,24 @@ export default async function decorate(block) {
         }
       });
     });
+
+    // Mark the nav link for the current section so its item gets the active
+    // (yellow box) highlight, matching the source. A link is "current" when the
+    // page path is at or beneath its target section (e.g. /us/en/adventures and
+    // /us/en/adventures/bali-surf-camp both light up "Adventures").
+    const here = window.location.pathname.replace(/\.html$/, '').replace(/\/$/, '');
+    navSections.querySelectorAll('a[href]').forEach((a) => {
+      let target;
+      try {
+        target = new URL(a.href, window.location).pathname;
+      } catch (e) {
+        return;
+      }
+      target = target.replace(/\.html$/, '').replace(/\/$/, '');
+      if (target && (here === target || here.startsWith(`${target}/`))) {
+        a.setAttribute('aria-current', 'page');
+      }
+    });
   }
 
   // hamburger for mobile
