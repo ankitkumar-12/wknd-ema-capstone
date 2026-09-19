@@ -419,26 +419,37 @@ main .section.tabs-container .default-content-wrapper ul > li p:last-child {
   text-transform: uppercase;
 }
 
-/* article-detail: body left, "Share this Story" + related list as right sidebar */
+/* article-detail: body left, "Share this Story" + related list as right sidebar.
+   The content column matches the source's ~776px measure; the sidebar sits to
+   its right. Only the wrapper that actually contains the aside becomes the
+   two-column grid, so the title/intro wrapper stays single-column. */
 @media (width >= 900px) {
-  main .section.article-detail .default-content-wrapper {
+  main .section.article-detail .default-content-wrapper:has(.article-aside) {
     display: grid;
-    grid-template-columns: 1fr 280px;
+    grid-template-columns: 776px 1fr;
     column-gap: 48px;
     align-items: start;
   }
 
   /* body content flows in the left column */
-  main .section.article-detail .default-content-wrapper > :not(.article-aside) {
+  main .section.article-detail .default-content-wrapper:has(.article-aside) > :not(.article-aside) {
     grid-column: 1;
     min-width: 0;
   }
 
-  /* the aside spans the right column, from the top */
-  main .section.article-detail .default-content-wrapper > .article-aside {
+  /* the aside sits at the top of the right column (not spanning body rows) */
+  main .section.article-detail .default-content-wrapper:has(.article-aside) > .article-aside {
     grid-column: 2;
-    grid-row: 1 / 100;
+    grid-row: 1;
     align-self: start;
+  }
+
+  /* keep the title/intro/lead-image wrappers on the same 1200px centered
+     container as the body wrapper (so their left edge lines up with the body
+     column), but constrain their content to the 776px measure, left-aligned. */
+  main .section.article-detail .default-content-wrapper:not(:has(.article-aside)) > * {
+    max-width: 776px;
+    margin-right: auto;
   }
 }
 
@@ -460,6 +471,191 @@ main .section.article-detail .article-aside ul {
 }
 
 main .section.article-detail .article-aside ul > li {
-  padding: 12px 0;
+  padding: 0;
   border-bottom: 1px solid var(--light-color);
+}
+
+/* --- article body: prose, inline images, byline (match source) --- */
+
+/* article title — match the source's 40px serif H1 (was oversized) */
+main .section.article-detail h1 {
+  font-size: 40px;
+  line-height: 1.1;
+}
+
+/* 1. inline body images — centered in the content column, constrained to the
+   source's moderate width (not full-bleed). Images sit inside <p> wrappers. */
+main .section.article-detail .default-content-wrapper p img,
+main .section.article-detail .default-content-wrapper p picture {
+  display: block;
+  width: 100%;
+  max-width: 748px;
+  height: auto;
+  margin-inline: auto;
+}
+
+/* lead image — the article's top image sits in its own wrapper before the
+   title. The source's lead image breaks out wider than the text measure
+   (~1136px), which makes it taller and shows the full figure. Let it fill the
+   wider content container rather than the 776px text column. */
+main .section.article-detail .default-content-wrapper:not(:has(.article-aside)):first-child > * {
+  max-width: 1136px;
+}
+
+main .section.article-detail .default-content-wrapper:not(:has(.article-aside)):first-child p img,
+main .section.article-detail .default-content-wrapper:not(:has(.article-aside)):first-child p picture {
+  max-width: 1136px;
+}
+
+/* 2. body copy — justified with the source's roomier line-height (~45px/18px) */
+/* stylelint-disable-next-line no-descending-specificity */
+main .section.article-detail .default-content-wrapper p {
+  text-align: justify;
+  line-height: 2.5;
+}
+
+/* 3. byline — small uppercase text, not a serif heading (no yellow underline) */
+main .section.article-detail .article-byline {
+  margin: 12px 0;
+  padding: 0;
+  border: 0;
+  font-family: var(--body-font-family);
+  font-size: 16px;
+  font-weight: 600;
+  line-height: 1.25;
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+  color: var(--text-color);
+}
+
+main .section.article-detail .article-byline::after {
+  content: none;
+}
+
+/* 4. author bio photo — circular avatar (matches source's 60px round photo) */
+main .section.article-detail .article-author-photo {
+  text-align: left;
+}
+
+/* stylelint-disable no-descending-specificity */
+main .section.article-detail .default-content-wrapper p.article-author-photo img,
+main .section.article-detail .default-content-wrapper p.article-author-photo picture {
+  width: 60px;
+  min-width: 60px;
+  max-width: 60px;
+  height: 60px;
+  margin: 0;
+  border-radius: 50%;
+  object-fit: cover;
+}
+/* stylelint-enable no-descending-specificity */
+
+/* author bio band — avatar + name/role on the left, social icons in a row on
+   the right, all on one horizontal line (matches source) */
+main .section.article-detail .article-author {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 16px 24px;
+  margin: 24px 0;
+}
+
+/* avatar in the left column spanning both rows; name (top) + role (below)
+   stacked in the right column */
+main .section.article-detail .article-author-info {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  column-gap: 16px;
+  align-items: center;
+}
+
+main .section.article-detail .article-author-info .article-author-photo {
+  grid-column: 1;
+  grid-row: 1 / span 2;
+  margin: 0;
+}
+
+main .section.article-detail .article-author-info .article-author-name {
+  grid-column: 2;
+  align-self: end;
+  margin: 0;
+}
+
+/* no yellow underline under the author name (source has none) */
+main .section.article-detail .article-author-info .article-author-name::after {
+  content: none;
+}
+
+/* stylelint-disable-next-line no-descending-specificity */
+main .section.article-detail .article-author-info > p:not(.article-author-photo) {
+  grid-column: 2;
+  align-self: start;
+  margin: 0;
+}
+
+/* social icons sit in a horizontal row on the right */
+main .section.article-detail .article-author-links {
+  display: flex;
+  gap: 4px;
+  flex-shrink: 0;
+}
+
+/* 5. author social links — dark square boxes with white icons (like footer) */
+main .section.article-detail .article-social {
+  display: flex;
+  gap: 4px;
+  margin: 0;
+}
+
+main .section.article-detail a.article-social-icon:any-link {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 48px;
+  height: 48px;
+  background-color: var(--text-color);
+  color: var(--background-color);
+}
+
+main .section.article-detail a.article-social-icon:hover {
+  background-color: var(--wknd-yellow);
+  color: var(--text-color);
+}
+
+main .section.article-detail .article-social-icon svg {
+  width: 20px;
+  height: 20px;
+  fill: currentcolor;
+}
+
+/* 6. "Share this Story" related list — stacked uppercase title + muted date;
+   hovering an item fills the whole block with the WKND yellow (matches source) */
+main .section.article-detail .article-aside ul > li > a {
+  display: block;
+  padding: 8px 16px;
+  text-decoration: none;
+  color: var(--text-color);
+  transition: background-color 0.15s ease;
+}
+
+main .section.article-detail .article-aside ul > li > a:hover {
+  text-decoration: none;
+  background-color: var(--wknd-yellow);
+}
+
+main .section.article-detail .article-aside .related-title {
+  display: block;
+  font-size: 18px;
+  line-height: 1.25;
+  text-transform: uppercase;
+  color: var(--text-color);
+}
+
+main .section.article-detail .article-aside .related-date {
+  display: block;
+  margin-top: 4px;
+  font-size: 12px;
+  text-transform: uppercase;
+  color: var(--dark-color);
 }
