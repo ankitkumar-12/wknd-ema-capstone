@@ -463,3 +463,116 @@ main .section.article-detail .article-aside ul > li {
   padding: 12px 0;
   border-bottom: 1px solid var(--light-color);
 }
+
+/* --- article body: prose, inline images, byline (match source) --- */
+
+/* 1. inline body images — centered in the content column, constrained to the
+   source's moderate width (not full-bleed). Images sit inside <p> wrappers. */
+main .section.article-detail .default-content-wrapper p img,
+main .section.article-detail .default-content-wrapper p picture {
+  display: block;
+  width: 100%;
+  max-width: 748px;
+  height: auto;
+  margin-inline: auto;
+}
+
+/* 2. body copy — justified with the source's roomier line-height (~45px/18px) */
+/* stylelint-disable-next-line no-descending-specificity */
+main .section.article-detail .default-content-wrapper p {
+  text-align: justify;
+  line-height: 2.5;
+}
+
+/* 3. byline — small uppercase text, not a serif heading (no yellow underline) */
+main .section.article-detail .article-byline {
+  margin: 12px 0;
+  padding: 0;
+  border: 0;
+  font-family: var(--body-font-family);
+  font-size: 16px;
+  font-weight: 600;
+  line-height: 1.25;
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+  color: var(--text-color);
+}
+
+main .section.article-detail .article-byline::after {
+  content: none;
+}
+
+/* 4. author bio photo — circular avatar (matches source's 60px round photo) */
+main .section.article-detail .article-author-photo {
+  text-align: left;
+}
+
+/* stylelint-disable no-descending-specificity */
+main .section.article-detail .default-content-wrapper p.article-author-photo img,
+main .section.article-detail .default-content-wrapper p.article-author-photo picture {
+  width: 60px;
+  min-width: 60px;
+  max-width: 60px;
+  height: 60px;
+  margin: 0;
+  border-radius: 50%;
+  object-fit: cover;
+}
+/* stylelint-enable no-descending-specificity */
+
+/* 5. author social links — dark square boxes with white icons (like footer) */
+main .section.article-detail .article-social {
+  display: flex;
+  gap: 4px;
+  margin: 12px 0;
+}
+
+main .section.article-detail a.article-social-icon:any-link {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 48px;
+  height: 48px;
+  background-color: var(--text-color);
+  color: var(--background-color);
+}
+
+main .section.article-detail a.article-social-icon:hover {
+  background-color: var(--wknd-yellow);
+  color: var(--text-color);
+}
+
+main .section.article-detail .article-social-icon svg {
+  width: 20px;
+  height: 20px;
+  fill: currentcolor;
+}
+
+/* 6. "Share this Story" related list — stacked uppercase title + muted date,
+   subtle hover (no plain underline) */
+main .section.article-detail .article-aside ul > li > a {
+  display: block;
+  text-decoration: none;
+  color: var(--text-color);
+}
+
+main .section.article-detail .article-aside ul > li > a:hover {
+  text-decoration: none;
+  opacity: 0.6;
+}
+
+main .section.article-detail .article-aside .related-title {
+  display: block;
+  font-size: 18px;
+  line-height: 1.25;
+  text-transform: uppercase;
+  color: var(--text-color);
+}
+
+main .section.article-detail .article-aside .related-date {
+  display: block;
+  margin-top: 4px;
+  font-size: 12px;
+  text-transform: uppercase;
+  color: var(--dark-color);
+}
