@@ -52,6 +52,7 @@
 }
 
 .columns.members-teaser > div > div {
+  position: relative;
   display: flex;
   flex-direction: column;
   align-items: flex-start;
@@ -59,13 +60,49 @@
   flex: unset;
 }
 
-/* title — uppercase bold sans-serif, with a yellow lock badge before it */
+/* Locked look: the teaser content (title, description, button, image) is
+   muted/faded so the card clearly reads as gated. The corner-ribbon lock badge
+   below is drawn on the column itself, so it stays full-opacity and legible. */
+.columns.members-teaser > div > div > * {
+  opacity: 0.65;
+}
+
+/* Yellow diagonal corner ribbon (folded-corner flag) in the card's top-left,
+   overlapping the start of the title — matches the source. A triangle drawn
+   with a diagonal gradient; the padlock glyph sits on top of it. */
+.columns.members-teaser > div > div::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 2;
+  width: 54px;
+  height: 54px;
+  background-image: linear-gradient(to left top, transparent 0, transparent 50%, var(--wknd-yellow) 50%, var(--wknd-yellow) 100%);
+  pointer-events: none;
+}
+
+.columns.members-teaser > div > div::after {
+  content: '';
+  position: absolute;
+  top: 6px;
+  left: 6px;
+  z-index: 3;
+  width: 20px;
+  height: 20px;
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: 18px 18px;
+  background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="%23202020" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="11" width="14" height="10" rx="1.5" fill="%23202020" stroke="none"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/></svg>');
+  pointer-events: none;
+}
+
+/* title — uppercase bold sans-serif; left padding clears the corner ribbon so
+   the first letters aren't lost behind it while still overlapping visually */
 .columns.members-teaser > div > div > h3 {
   order: 1;
-  display: flex;
-  align-items: center;
-  gap: 10px;
   margin: 9px 0;
+  padding-left: 34px;
   font-family: var(--body-font-family);
   font-size: 18px;
   font-weight: 600;
@@ -73,19 +110,6 @@
   line-height: 1.25;
   text-transform: uppercase;
   color: var(--text-color);
-}
-
-/* yellow lock badge: a WKND-yellow square with a black padlock glyph */
-.columns.members-teaser > div > div > h3::before {
-  content: '';
-  flex: 0 0 auto;
-  width: 28px;
-  height: 28px;
-  background-color: var(--wknd-yellow);
-  background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="%23202020" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="11" width="14" height="10" rx="1.5" fill="%23202020" stroke="none"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/></svg>');
-  background-repeat: no-repeat;
-  background-position: center;
-  background-size: 18px 18px;
 }
 
 /* description — uppercase muted grey (the paragraph right after the title) */
