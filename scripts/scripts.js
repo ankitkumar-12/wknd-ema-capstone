@@ -212,6 +212,35 @@ function decorateArticleAside(main) {
     if (p) p.classList.add('article-social');
   });
 
+  // author bio band — group the avatar + name/role (left) and the social icons
+  // (right) into a single horizontal band, matching the source. The flat source
+  // markup is: photo <p>, name <h2/h3>, role <p>, then three social <p>s. Wrap
+  // the photo + name + role into a left "info" group and the social links into
+  // a right "links" group, both inside one flex band.
+  if (authorHeading && authorHeading.parentElement) {
+    const parent = authorHeading.parentElement;
+    const photo = parent.querySelector('.article-author-photo');
+    const roleP = authorHeading.nextElementSibling; // the "Skater, Writer" role
+    const socialParas = [...parent.querySelectorAll('.article-social')];
+    if (photo && socialParas.length) {
+      const band = document.createElement('div');
+      band.className = 'article-author';
+      const info = document.createElement('div');
+      info.className = 'article-author-info';
+      const links = document.createElement('div');
+      links.className = 'article-author-links';
+
+      // place the band where the photo currently is, then fill the groups
+      photo.before(band);
+      info.append(photo, authorHeading);
+      if (roleP && roleP.tagName === 'P' && !roleP.classList.contains('article-social')) {
+        info.append(roleP);
+      }
+      socialParas.forEach((p) => links.append(p));
+      band.append(info, links);
+    }
+  }
+
   const aside = document.createElement('aside');
   aside.className = 'article-aside';
   // move the Share heading and everything after it (the related list) into the aside

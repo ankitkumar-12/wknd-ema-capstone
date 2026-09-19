@@ -471,7 +471,7 @@ main .section.article-detail .article-aside ul {
 }
 
 main .section.article-detail .article-aside ul > li {
-  padding: 12px 0;
+  padding: 0;
   border-bottom: 1px solid var(--light-color);
 }
 
@@ -495,11 +495,16 @@ main .section.article-detail .default-content-wrapper p picture {
 }
 
 /* lead image — the article's top image sits in its own wrapper before the
-   title; size it to the source's wider lead image (fills the content measure)
-   rather than the narrower inline width. */
+   title. The source's lead image breaks out wider than the text measure
+   (~1136px), which makes it taller and shows the full figure. Let it fill the
+   wider content container rather than the 776px text column. */
+main .section.article-detail .default-content-wrapper:not(:has(.article-aside)):first-child > * {
+  max-width: 1136px;
+}
+
 main .section.article-detail .default-content-wrapper:not(:has(.article-aside)):first-child p img,
 main .section.article-detail .default-content-wrapper:not(:has(.article-aside)):first-child p picture {
-  max-width: 776px;
+  max-width: 1136px;
 }
 
 /* 2. body copy — justified with the source's roomier line-height (~45px/18px) */
@@ -545,11 +550,62 @@ main .section.article-detail .default-content-wrapper p.article-author-photo pic
 }
 /* stylelint-enable no-descending-specificity */
 
+/* author bio band — avatar + name/role on the left, social icons in a row on
+   the right, all on one horizontal line (matches source) */
+main .section.article-detail .article-author {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 16px 24px;
+  margin: 24px 0;
+}
+
+/* avatar in the left column spanning both rows; name (top) + role (below)
+   stacked in the right column */
+main .section.article-detail .article-author-info {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  column-gap: 16px;
+  align-items: center;
+}
+
+main .section.article-detail .article-author-info .article-author-photo {
+  grid-column: 1;
+  grid-row: 1 / span 2;
+  margin: 0;
+}
+
+main .section.article-detail .article-author-info .article-author-name {
+  grid-column: 2;
+  align-self: end;
+  margin: 0;
+}
+
+/* no yellow underline under the author name (source has none) */
+main .section.article-detail .article-author-info .article-author-name::after {
+  content: none;
+}
+
+/* stylelint-disable-next-line no-descending-specificity */
+main .section.article-detail .article-author-info > p:not(.article-author-photo) {
+  grid-column: 2;
+  align-self: start;
+  margin: 0;
+}
+
+/* social icons sit in a horizontal row on the right */
+main .section.article-detail .article-author-links {
+  display: flex;
+  gap: 4px;
+  flex-shrink: 0;
+}
+
 /* 5. author social links — dark square boxes with white icons (like footer) */
 main .section.article-detail .article-social {
   display: flex;
   gap: 4px;
-  margin: 12px 0;
+  margin: 0;
 }
 
 main .section.article-detail a.article-social-icon:any-link {
@@ -573,17 +629,19 @@ main .section.article-detail .article-social-icon svg {
   fill: currentcolor;
 }
 
-/* 6. "Share this Story" related list — stacked uppercase title + muted date,
-   subtle hover (no plain underline) */
+/* 6. "Share this Story" related list — stacked uppercase title + muted date;
+   hovering an item fills the whole block with the WKND yellow (matches source) */
 main .section.article-detail .article-aside ul > li > a {
   display: block;
+  padding: 8px 16px;
   text-decoration: none;
   color: var(--text-color);
+  transition: background-color 0.15s ease;
 }
 
 main .section.article-detail .article-aside ul > li > a:hover {
   text-decoration: none;
-  opacity: 0.6;
+  background-color: var(--wknd-yellow);
 }
 
 main .section.article-detail .article-aside .related-title {
