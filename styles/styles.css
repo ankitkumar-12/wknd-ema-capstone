@@ -366,7 +366,8 @@ main .section.highlight {
   }
 
   main .section.carousel-container.tabs-container > .breadcrumbs-wrapper,
-  main .section.carousel-container.tabs-container > .carousel-wrapper {
+  main .section.carousel-container.tabs-container > .carousel-wrapper,
+  main .section.carousel-container.tabs-container > .adventure-title-wrapper {
     grid-column: 1 / -1;
     min-width: 0;
     width: 100%;
@@ -385,11 +386,32 @@ main .section.highlight {
   main .section.carousel-container.tabs-container > .tabs-wrapper {
     grid-column: 2;
   }
+}
 
-  /* the H1 title spans both columns, above the sidebar/tabs */
-  main .section.carousel-container.tabs-container > .default-content-wrapper h1 {
-    grid-column: 1 / -1;
-  }
+/* adventure title lifted below the hero — full-width, left-aligned, serif with
+   the yellow underline (the H1 moved out of .default-content-wrapper, which
+   otherwise supplies the underline, so re-apply it here) */
+main .section.carousel-container.tabs-container .adventure-title-wrapper {
+  margin: 24px 0 0;
+}
+
+main .section.carousel-container.tabs-container .adventure-title-wrapper h1 {
+  margin: 0;
+  text-align: left;
+}
+
+main .section.carousel-container.tabs-container .adventure-title-wrapper h1::after {
+  content: '';
+  display: block;
+  width: 84px;
+  height: 3px;
+  margin-top: 12px;
+  background-color: var(--wknd-yellow);
+}
+
+/* tabs are left-aligned within the content column (matches source) */
+main .section.carousel-container.tabs-container .tabs-list {
+  justify-content: flex-start;
 }
 
 /* metadata list styled as labeled fields with a left divider rule */
@@ -529,6 +551,7 @@ main .section.article-detail .article-aside ul > li {
 /* --- article body: prose, inline images, byline (match source) --- */
 
 /* article title — match the source's 40px serif H1 (was oversized) */
+/* stylelint-disable-next-line no-descending-specificity */
 main .section.article-detail h1 {
   font-size: 40px;
   line-height: 1.1;
