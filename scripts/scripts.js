@@ -305,23 +305,38 @@ function decorateAdventureCaption(main) {
 
 /**
  * On adventure-detail pages the H1 title is authored inside the same content
- * block as the metadata sidebar, so it lands in the left grid column. The source
- * shows the title full-width DIRECTLY below the hero, above the sidebar+tabs.
- * Lift the H1 into its own wrapper placed right after the carousel so it forms a
- * full-width grid row above the two columns.
+ * block as the metadata sidebar. The source shows the title full-width directly
+ * below the hero, then the metadata sidebar + tabs side by side with their tops
+ * aligned. We (1) lift the H1 into its own full-width wrapper below the hero and
+ * (2) wrap the metadata sidebar + tabs into a single two-column row container.
+ * Wrapping the two columns in their own grid — rather than relying on the outer
+ * section's auto-placement — guarantees their tops align (no phantom gap).
  * @param {Element} main The main element
  */
 function decorateAdventureLayout(main) {
   const section = main.querySelector('.section.carousel-container.tabs-container');
   if (!section) return;
   const dcw = section.querySelector(':scope > .default-content-wrapper');
-  const h1 = dcw && dcw.querySelector(':scope > h1');
-  if (!h1 || dcw.previousElementSibling?.classList.contains('adventure-title-wrapper')) return;
+  const tabsWrapper = section.querySelector(':scope > .tabs-wrapper');
+  if (!dcw || section.querySelector(':scope > .adventure-columns')) return;
 
-  const titleWrapper = document.createElement('div');
-  titleWrapper.className = 'adventure-title-wrapper';
-  titleWrapper.append(h1);
-  dcw.before(titleWrapper);
+  // lift the title out into a full-width wrapper below the hero
+  const h1 = dcw.querySelector(':scope > h1');
+  if (h1) {
+    const titleWrapper = document.createElement('div');
+    titleWrapper.className = 'adventure-title-wrapper';
+    titleWrapper.append(h1);
+    dcw.before(titleWrapper);
+  }
+
+  // pair the metadata sidebar and the tabs into one two-column row so their tops
+  // line up regardless of their differing heights
+  if (tabsWrapper) {
+    const columns = document.createElement('div');
+    columns.className = 'adventure-columns';
+    dcw.before(columns);
+    columns.append(dcw, tabsWrapper);
+  }
 }
 
 /**
