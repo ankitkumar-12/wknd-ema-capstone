@@ -704,7 +704,8 @@ main .section.article-detail .article-social {
   margin: 0;
 }
 
-main .section.article-detail a.article-social-icon:any-link {
+main .section.article-detail a.article-social-icon:any-link,
+main .section.about-contributors a.article-social-icon:any-link {
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -714,12 +715,14 @@ main .section.article-detail a.article-social-icon:any-link {
   color: var(--background-color);
 }
 
-main .section.article-detail a.article-social-icon:hover {
+main .section.article-detail a.article-social-icon:hover,
+main .section.about-contributors a.article-social-icon:hover {
   background-color: var(--wknd-yellow);
   color: var(--text-color);
 }
 
-main .section.article-detail .article-social-icon svg {
+main .section.article-detail .article-social-icon svg,
+main .section.about-contributors .article-social-icon svg {
   width: 20px;
   height: 20px;
   fill: currentcolor;
@@ -754,4 +757,91 @@ main .section.article-detail .article-aside .related-date {
   font-size: 12px;
   text-transform: uppercase;
   color: var(--dark-color);
+}
+
+/* ============================================================
+   About Us — Our Contributors / WKND Guides
+   ============================================================ */
+
+/* The page title carries no yellow underline on the source (only the section
+   dividers "Our Contributors" / "WKND Guides" do). Suppress just the H1's
+   underline here; the H2 dividers keep the shared default-content underline. */
+/* stylelint-disable-next-line no-descending-specificity */
+main .section.about-contributors > .default-content-wrapper > h1::after {
+  content: none;
+}
+
+/* responsive card grid — 4-up on desktop, matching the source */
+main .section.about-contributors .contributors-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 48px 24px;
+  margin: 32px 0;
+}
+
+main .section.about-contributors .contributor-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+}
+
+/* circular avatar (source renders ~164px round, cover-cropped) */
+main .section.about-contributors .contributor-photo {
+  margin: 0;
+}
+
+/* stylelint-disable no-descending-specificity */
+main .section.about-contributors .contributor-photo img,
+main .section.about-contributors .contributor-photo picture {
+  width: 164px;
+  min-width: 164px;
+  height: 164px;
+  border-radius: 50%;
+  object-fit: cover;
+}
+/* stylelint-enable no-descending-specificity */
+
+/* name — serif, centered, no underline */
+main .section.about-contributors .contributor-name {
+  margin: 16px 0 4px;
+  font-size: var(--heading-font-size-s);
+  text-align: center;
+}
+
+main .section.about-contributors .contributor-name::after {
+  content: none;
+}
+
+/* role — small uppercase sans-serif */
+main .section.about-contributors .contributor-role {
+  margin: 0 0 12px;
+  font-family: var(--body-font-family);
+  font-size: var(--body-font-size-xs);
+  font-weight: 600;
+  text-transform: uppercase;
+  text-align: center;
+}
+
+main .section.about-contributors .contributor-role::after {
+  content: none;
+}
+
+/* horizontal row of dark boxed social icons */
+main .section.about-contributors .contributor-socials {
+  display: flex;
+  justify-content: center;
+  gap: 4px;
+}
+
+@media (width < 900px) {
+  main .section.about-contributors .contributors-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (width < 600px) {
+  main .section.about-contributors .contributors-grid {
+    grid-template-columns: 1fr;
+  }
 }

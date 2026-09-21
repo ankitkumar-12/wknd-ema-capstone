@@ -159,6 +159,23 @@ const ARTICLE_SOCIAL_ICONS = {
 const RELATED_DATE_RE = /\s+((?:Mon|Tues|Wednes|Thurs|Fri|Satur|Sun)day,\s+\d{1,2}\s+\w+\s+\d{4})$/;
 
 /**
+ * Convert a Facebook/Twitter/Instagram text link into a dark boxed social-icon
+ * button (the shared style used by article author bios and About Us contributor
+ * cards). Matches on the link's title/text; no-ops for other links.
+ * @param {HTMLAnchorElement} a The social link
+ * @returns {string|null} The matched network key, or null if not a social link
+ */
+function toBoxedSocialIcon(a) {
+  const label = (a.getAttribute('title') || a.textContent).trim();
+  const key = Object.keys(ARTICLE_SOCIAL_ICONS).find((k) => new RegExp(k, 'i').test(label));
+  if (!key) return null;
+  a.className = `article-social-icon article-social-icon--${key}`;
+  a.setAttribute('aria-label', label);
+  a.innerHTML = ARTICLE_SOCIAL_ICONS[key];
+  return key;
+}
+
+/**
  * On article-detail pages, restyle the byline, author bio block, author social
  * links and the "Share this Story" related list to match the source, and move
  * the share section into a right-hand <aside> so the body + sidebar render in
@@ -204,12 +221,7 @@ function decorateArticleAside(main) {
   // link labelled Facebook/Twitter/Instagram.
   const socialLinks = [...scope.querySelectorAll('a[href^="#"]')].filter((a) => /facebook|twitter|instagram/i.test(a.getAttribute('title') || a.textContent));
   socialLinks.forEach((a) => {
-    const label = (a.getAttribute('title') || a.textContent).trim();
-    const key = Object.keys(ARTICLE_SOCIAL_ICONS).find((k) => new RegExp(k, 'i').test(label));
-    if (!key) return;
-    a.className = `article-social-icon article-social-icon--${key}`;
-    a.setAttribute('aria-label', label);
-    a.innerHTML = ARTICLE_SOCIAL_ICONS[key];
+    if (!toBoxedSocialIcon(a)) return;
     const p = a.closest('p');
     if (p) p.classList.add('article-social');
   });
@@ -349,6 +361,78 @@ function decorateAdventureLayout(main) {
 }
 
 /**
+ * On the About Us page the contributors are authored as a flat run of elements
+ * inside one content wrapper: an <h2> section divider ("Our Contributors" /
+ * "WKND Guides"), an intro <p>, then, per person, a photo <p>, a name <h3>, a
+ * role <h5> and three social-link <p>s. The source renders each person as a card
+ * (circular photo, serif name, uppercase role, dark boxed social icons) in a
+ * responsive multi-column grid. Group each person's run into a .contributor-card
+ * and collect the cards following each <h2> into a .contributors-grid. No-ops
+ * when the "Our Contributors" heading is absent (i.e. every other page).
+ * @param {Element} main The main element
+ */
+function decorateContributors(main) {
+  const wrapper = [...main.querySelectorAll('.default-content-wrapper')].find((w) => [...w.querySelectorAll('h2')].some((h) => /our contributors/i.test(h.textContent)));
+  if (!wrapper) return;
+  wrapper.closest('.section')?.classList.add('about-contributors');
+
+  // Walk the flat children. A person's card starts at a photo paragraph and runs
+  // until the next photo/heading. Cards accumulate into a grid that is flushed
+  // whenever an <h2> divider (a new contributor group) is encountered.
+  const children = [...wrapper.children];
+  let grid = null;
+  let card = null;
+
+  const flushCard = () => { card = null; };
+
+  children.forEach((el) => {
+    const isPhoto = el.tagName === 'P' && el.querySelector('picture, img');
+
+    if (el.tagName === 'H2') {
+      // section divider — the following people form a fresh grid
+      grid = null;
+      flushCard();
+      return;
+    }
+
+    if (isPhoto) {
+      // start a new card, opening a grid if needed
+      if (!grid) {
+        grid = document.createElement('div');
+        grid.className = 'contributors-grid';
+        el.before(grid);
+      }
+      card = document.createElement('div');
+      card.className = 'contributor-card';
+      grid.append(card);
+      el.classList.add('contributor-photo');
+      card.append(el);
+      return;
+    }
+
+    // not a photo and not a divider: belongs to the current card if one is open.
+    if (card) {
+      if (el.tagName === 'H3') el.classList.add('contributor-name');
+      if (el.tagName === 'H5') el.classList.add('contributor-role');
+      const link = el.tagName === 'P' ? el.querySelector('a[href^="#"]') : null;
+      if (link && toBoxedSocialIcon(link)) el.classList.add('contributor-social');
+      card.append(el);
+    }
+  });
+
+  // group each card's three social paragraphs into one row for horizontal layout
+  wrapper.querySelectorAll('.contributor-card').forEach((c) => {
+    const socials = [...c.querySelectorAll(':scope > .contributor-social')];
+    if (!socials.length) return;
+    const row = document.createElement('div');
+    row.className = 'contributor-socials';
+    socials[0].before(row);
+    socials.forEach((p) => row.append(p.querySelector('a') || p));
+    socials.forEach((p) => p.remove());
+  });
+}
+
+/**
  * Decorates the main element.
  * @param {Element} main The main element
  */
@@ -362,6 +446,7 @@ export function decorateMain(main) {
   decorateArticleAside(main);
   decorateAdventureCaption(main);
   decorateAdventureLayout(main);
+  decorateContributors(main);
 }
 
 /**
