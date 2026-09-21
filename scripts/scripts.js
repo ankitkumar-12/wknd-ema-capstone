@@ -198,9 +198,11 @@ function decorateArticleAside(main) {
     if (prev) prev.classList.add('article-author-photo');
   }
 
-  // author social links — convert the promoted text buttons (#-links titled
-  // Facebook/Twitter/Instagram) into dark boxed icon buttons like the footer.
-  const socialLinks = [...scope.querySelectorAll('a[href="#"]')].filter((a) => /facebook|twitter|instagram/i.test(a.getAttribute('title') || a.textContent));
+  // author social links — convert the promoted text buttons into dark boxed
+  // icon buttons like the footer. The author's links are placeholder hash links
+  // whose target varies per author (e.g. "#" or "#jbarr"), so match any hash
+  // link labelled Facebook/Twitter/Instagram.
+  const socialLinks = [...scope.querySelectorAll('a[href^="#"]')].filter((a) => /facebook|twitter|instagram/i.test(a.getAttribute('title') || a.textContent));
   socialLinks.forEach((a) => {
     const label = (a.getAttribute('title') || a.textContent).trim();
     const key = Object.keys(ARTICLE_SOCIAL_ICONS).find((k) => new RegExp(k, 'i').test(label));
@@ -272,7 +274,78 @@ function decorateArticleAside(main) {
     }
   });
 
-  wrapper.append(aside);
+  // Wrap the remaining body content (title, byline, prose, author bio) into a
+  // single .article-body element so the body column and the aside are each one
+  // grid item — this stops the tall aside from inflating the body's first grid
+  // row (which pushed the byline far below the title).
+  const body = document.createElement('div');
+  body.className = 'article-body';
+  while (wrapper.firstChild) body.append(wrapper.firstChild);
+  wrapper.append(body, aside);
+}
+
+/**
+ * On adventure-detail pages, the overview image is followed by a short caption
+ * that the source renders as a small uppercase title (e.g. "Yosemite is a great
+ * family friendly adventure"). In our content that caption is a bare text node
+ * beside the image inside a <p>; wrap it in a span so CSS can style it.
+ * @param {Element} main The main element
+ */
+function decorateAdventureCaption(main) {
+  const section = main.querySelector('.section.carousel-container.tabs-container');
+  if (!section) return;
+  // The tabs block re-classes panels asynchronously after decorateMain, so this
+  // is scoped to the section (not .tabs-panel) and matches any <p> that pairs an
+  // image with a trailing text caption — the paragraph node persists regardless
+  // of the tabs decoration timing.
+  section.querySelectorAll('p').forEach((p) => {
+    if (!p.querySelector('picture, img')) return;
+    if (p.querySelector('.adventure-caption')) return;
+    [...p.childNodes].forEach((node) => {
+      if (node.nodeType === Node.TEXT_NODE && node.textContent.trim()) {
+        const span = document.createElement('span');
+        span.className = 'adventure-caption';
+        span.textContent = node.textContent.trim();
+        node.replaceWith(span);
+      }
+    });
+  });
+}
+
+/**
+ * On adventure-detail pages the H1 title is authored inside the same content
+ * block as the metadata sidebar. The source shows the title full-width directly
+ * below the hero, then the metadata sidebar + tabs side by side with their tops
+ * aligned. We (1) lift the H1 into its own full-width wrapper below the hero and
+ * (2) wrap the metadata sidebar + tabs into a single two-column row container.
+ * Wrapping the two columns in their own grid — rather than relying on the outer
+ * section's auto-placement — guarantees their tops align (no phantom gap).
+ * @param {Element} main The main element
+ */
+function decorateAdventureLayout(main) {
+  const section = main.querySelector('.section.carousel-container.tabs-container');
+  if (!section) return;
+  const dcw = section.querySelector(':scope > .default-content-wrapper');
+  const tabsWrapper = section.querySelector(':scope > .tabs-wrapper');
+  if (!dcw || section.querySelector(':scope > .adventure-columns')) return;
+
+  // lift the title out into a full-width wrapper below the hero
+  const h1 = dcw.querySelector(':scope > h1');
+  if (h1) {
+    const titleWrapper = document.createElement('div');
+    titleWrapper.className = 'adventure-title-wrapper';
+    titleWrapper.append(h1);
+    dcw.before(titleWrapper);
+  }
+
+  // pair the metadata sidebar and the tabs into one two-column row so their tops
+  // line up regardless of their differing heights
+  if (tabsWrapper) {
+    const columns = document.createElement('div');
+    columns.className = 'adventure-columns';
+    dcw.before(columns);
+    columns.append(dcw, tabsWrapper);
+  }
 }
 
 /**
@@ -287,6 +360,8 @@ export function decorateMain(main) {
   decorateBlocks(main);
   decorateButtons(main);
   decorateArticleAside(main);
+  decorateAdventureCaption(main);
+  decorateAdventureLayout(main);
 }
 
 /**

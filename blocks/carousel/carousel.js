@@ -118,7 +118,6 @@ export default async function decorate(block) {
   carouselId += 1;
   block.setAttribute('id', `carousel-${carouselId}`);
   const rows = block.querySelectorAll(':scope > div');
-  const isSingleSlide = rows.length < 2;
 
   block.setAttribute('role', 'region');
   block.setAttribute('aria-roledescription', 'Carousel');
@@ -130,8 +129,12 @@ export default async function decorate(block) {
   slidesWrapper.classList.add('carousel-slides');
   block.prepend(slidesWrapper);
 
+  // Render the dot indicator + prev/next arrows for every carousel, including
+  // single-slide ones (the adventure-detail hero is a one-slide carousel that
+  // still shows its controls in the source). With one slide the prev/next
+  // navigation simply resolves back to slide 0, so the controls are harmless.
   let slideIndicators;
-  if (!isSingleSlide) {
+  {
     const slideIndicatorsNav = document.createElement('nav');
     slideIndicatorsNav.setAttribute('aria-label', 'Carousel Slide Controls');
     slideIndicators = document.createElement('ol');
@@ -166,7 +169,5 @@ export default async function decorate(block) {
   container.append(slidesWrapper);
   block.prepend(container);
 
-  if (!isSingleSlide) {
-    bindEvents(block);
-  }
+  bindEvents(block);
 }

@@ -353,43 +353,76 @@ main .section.highlight {
   padding: 40px 0;
 }
 
-/* adventure-detail layout: breadcrumb + carousel full width, then a metadata
-   sidebar (default content) beside the tabbed content in two columns */
+/* adventure-detail layout: the section flows as a simple centered column
+   (breadcrumb, full-bleed hero, full-width title), then a nested two-column row
+   (.adventure-columns) holds the metadata sidebar beside the tabbed content.
+   Keeping the two columns in their own grid — rather than auto-placing them in
+   the outer section grid — guarantees their tops align with no phantom gap. */
+main .section.carousel-container.tabs-container {
+  max-width: 1200px;
+  margin: 40px auto;
+  padding: 0 32px;
+}
+
+/* hero is full-bleed: break the carousel-wrapper out to the full viewport width,
+   centered on its own position so it touches both viewport edges regardless of
+   the centered section's offset. */
+main .section.carousel-container.tabs-container > .carousel-wrapper {
+  width: 100vw;
+  max-width: 100vw;
+  position: relative;
+  left: 50%;
+  margin-left: -50vw;
+  margin-right: 0;
+}
+
 @media (width >= 900px) {
-  main .section.carousel-container.tabs-container {
+  main .section.carousel-container.tabs-container .adventure-columns {
     display: grid;
     grid-template-columns: 280px 1fr;
     column-gap: 48px;
-    max-width: 1200px;
-    margin: 40px auto;
-    padding: 0 32px;
+    align-items: start;
   }
 
-  main .section.carousel-container.tabs-container > .breadcrumbs-wrapper,
-  main .section.carousel-container.tabs-container > .carousel-wrapper {
-    grid-column: 1 / -1;
+  main .section.carousel-container.tabs-container .adventure-columns > .default-content-wrapper {
+    grid-column: 1;
     min-width: 0;
-    width: 100%;
-  }
-
-  main .section.carousel-container.tabs-container > div {
     max-width: none;
-    min-width: 0;
     padding: 0;
   }
 
-  main .section.carousel-container.tabs-container > .default-content-wrapper {
-    grid-column: 1;
-  }
-
-  main .section.carousel-container.tabs-container > .tabs-wrapper {
+  main .section.carousel-container.tabs-container .adventure-columns > .tabs-wrapper {
     grid-column: 2;
+    min-width: 0;
+    max-width: none;
+    padding: 0;
   }
+}
 
-  /* the H1 title spans both columns, above the sidebar/tabs */
-  main .section.carousel-container.tabs-container > .default-content-wrapper h1 {
-    grid-column: 1 / -1;
-  }
+/* adventure title lifted below the hero — full-width, left-aligned, serif with
+   the yellow underline (the H1 moved out of .default-content-wrapper, which
+   otherwise supplies the underline, so re-apply it here) */
+main .section.carousel-container.tabs-container .adventure-title-wrapper {
+  margin: 24px 0 0;
+}
+
+main .section.carousel-container.tabs-container .adventure-title-wrapper h1 {
+  margin: 0;
+  text-align: left;
+}
+
+main .section.carousel-container.tabs-container .adventure-title-wrapper h1::after {
+  content: '';
+  display: block;
+  width: 84px;
+  height: 3px;
+  margin-top: 12px;
+  background-color: var(--wknd-yellow);
+}
+
+/* tabs are left-aligned within the content column (matches source) */
+main .section.carousel-container.tabs-container .tabs-list {
+  justify-content: flex-start;
 }
 
 /* metadata list styled as labeled fields with a left divider rule */
@@ -419,28 +452,79 @@ main .section.tabs-container .default-content-wrapper ul > li p:last-child {
   text-transform: uppercase;
 }
 
+/* --- adventure-detail: overview body, image, caption + share label (source) --- */
+
+/* stylelint-disable no-descending-specificity */
+
+/* body copy in the tab panels — justified with the source's airy line-height */
+main .section.carousel-container.tabs-container .tabs-panel p {
+  text-align: justify;
+  line-height: 2.5;
+}
+
+/* overview image — constrained to the source's moderate width (~845px), not
+   full column width */
+main .section.carousel-container.tabs-container .tabs-panel p img,
+main .section.carousel-container.tabs-container .tabs-panel p picture {
+  display: block;
+  width: 100%;
+  max-width: 845px;
+  height: auto;
+}
+
+/* overview caption ("Yosemite is a great family friendly adventure") — small
+   uppercase bold, matching the source's image title */
+main .section.carousel-container.tabs-container .tabs-panel .adventure-caption {
+  display: block;
+  margin: 8px 0;
+  font-family: var(--body-font-family);
+  font-size: var(--body-font-size-xs);
+  font-weight: 600;
+  letter-spacing: 0.5px;
+  line-height: 1.4;
+  text-transform: uppercase;
+  text-align: left;
+  color: var(--text-color);
+}
+
+/* "Share this Adventure" label — small uppercase sans-serif (not serif) */
+main .section.carousel-container.tabs-container .default-content-wrapper h5 {
+  margin: 16px 0;
+  font-family: var(--body-font-family);
+  font-size: var(--body-font-size-xs);
+  font-weight: 600;
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+}
+
+main .section.carousel-container.tabs-container .default-content-wrapper h5::after {
+  content: none;
+}
+/* stylelint-enable no-descending-specificity */
+
 /* article-detail: body left, "Share this Story" + related list as right sidebar.
    The content column matches the source's ~776px measure; the sidebar sits to
    its right. Only the wrapper that actually contains the aside becomes the
    two-column grid, so the title/intro wrapper stays single-column. */
 @media (width >= 900px) {
-  main .section.article-detail .default-content-wrapper:has(.article-aside) {
+  main .section.article-detail .default-content-wrapper:has(.article-body) {
     display: grid;
     grid-template-columns: 776px 1fr;
     column-gap: 48px;
     align-items: start;
   }
 
-  /* body content flows in the left column */
-  main .section.article-detail .default-content-wrapper:has(.article-aside) > :not(.article-aside) {
+  /* the whole article body (title, byline, prose, author bio) is one grid item
+     in the left column; the aside is one grid item in the right column. Because
+     each column is a single item, neither inflates the other's row height — so
+     the byline sits directly under the title with no phantom gap. */
+  main .section.article-detail .default-content-wrapper:has(.article-body) > .article-body {
     grid-column: 1;
     min-width: 0;
   }
 
-  /* the aside sits at the top of the right column (not spanning body rows) */
-  main .section.article-detail .default-content-wrapper:has(.article-aside) > .article-aside {
+  main .section.article-detail .default-content-wrapper:has(.article-body) > .article-aside {
     grid-column: 2;
-    grid-row: 1;
     align-self: start;
   }
 
@@ -453,11 +537,20 @@ main .section.tabs-container .default-content-wrapper ul > li p:last-child {
   }
 }
 
+/* article-detail hero → breadcrumb spacing: give the breadcrumb room below the
+   hero image so it isn't pinned tight to it (matches the source). The
+   breadcrumb-to-title gap is already ~30px from the title's own top margin, so
+   only top spacing is added here. Scoped to the article template. */
+main .section.article-detail .breadcrumbs-wrapper {
+  margin-top: 14px;
+}
+
 main .section.article-detail .article-aside {
   border-top: 2px solid var(--light-color);
   padding-top: 16px;
 }
 
+/* stylelint-disable-next-line no-descending-specificity */
 main .section.article-detail .article-aside h5 {
   margin: 0 0 16px;
   text-transform: uppercase;
@@ -478,6 +571,7 @@ main .section.article-detail .article-aside ul > li {
 /* --- article body: prose, inline images, byline (match source) --- */
 
 /* article title — match the source's 40px serif H1 (was oversized) */
+/* stylelint-disable-next-line no-descending-specificity */
 main .section.article-detail h1 {
   font-size: 40px;
   line-height: 1.1;
@@ -485,6 +579,7 @@ main .section.article-detail h1 {
 
 /* 1. inline body images — centered in the content column, constrained to the
    source's moderate width (not full-bleed). Images sit inside <p> wrappers. */
+/* stylelint-disable no-descending-specificity */
 main .section.article-detail .default-content-wrapper p img,
 main .section.article-detail .default-content-wrapper p picture {
   display: block;
@@ -493,6 +588,7 @@ main .section.article-detail .default-content-wrapper p picture {
   height: auto;
   margin-inline: auto;
 }
+/* stylelint-enable no-descending-specificity */
 
 /* lead image — the article's top image sits in its own wrapper before the
    title. The source's lead image breaks out wider than the text measure

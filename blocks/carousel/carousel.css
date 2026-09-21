@@ -50,6 +50,12 @@ main > .section > .carousel-wrapper {
   min-height: min(52vw, 640px);
 }
 
+/* adventure-detail hero: a wide, SHORTER landscape banner (~1440×400 in the
+   source, aspect ~3.6) rather than the tall home hero. */
+main .section.carousel-container.tabs-container .carousel .carousel-slide {
+  min-height: min(28vw, 400px);
+}
+
 .carousel .carousel-slide .carousel-slide-image picture {
   position: absolute;
   inset: 0;
@@ -151,6 +157,35 @@ main > .section > .carousel-wrapper {
 .carousel .carousel-navigation-buttons button.slide-next::after {
   transform: translate(-50%, -50%) rotate(45deg);
   left: calc(50% - 2px);
+}
+
+/* adventure-detail hero: controls (dots + prev/next arrows) sit BELOW the hero
+   image rather than overlaid on it (matches source). Scoped so the homepage
+   hero keeps its in-image overlay controls. The arrows are the first child of
+   the slides container, so lay the container out as a column and order them
+   after the slides to drop them below the image. */
+main .section.carousel-container.tabs-container .carousel .carousel-slides-container {
+  display: flex;
+  flex-direction: column;
+}
+
+main .section.carousel-container.tabs-container .carousel .carousel-slides {
+  order: 0;
+}
+
+main .section.carousel-container.tabs-container .carousel .carousel-navigation-buttons {
+  order: 1;
+  position: static;
+  justify-content: flex-end;
+  padding: 8px 12px;
+}
+
+main .section.carousel-container.tabs-container .carousel .carousel-navigation-buttons button {
+  color: var(--text-color);
+}
+
+main .section.carousel-container.tabs-container .carousel .carousel-slide-indicators {
+  justify-content: center;
 }
 
 /* Mobile / narrow screens: stack vertically instead of overlaying. The image
