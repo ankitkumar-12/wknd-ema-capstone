@@ -507,23 +507,24 @@ main .section.carousel-container.tabs-container .default-content-wrapper h5::aft
    its right. Only the wrapper that actually contains the aside becomes the
    two-column grid, so the title/intro wrapper stays single-column. */
 @media (width >= 900px) {
-  main .section.article-detail .default-content-wrapper:has(.article-aside) {
+  main .section.article-detail .default-content-wrapper:has(.article-body) {
     display: grid;
     grid-template-columns: 776px 1fr;
     column-gap: 48px;
     align-items: start;
   }
 
-  /* body content flows in the left column */
-  main .section.article-detail .default-content-wrapper:has(.article-aside) > :not(.article-aside) {
+  /* the whole article body (title, byline, prose, author bio) is one grid item
+     in the left column; the aside is one grid item in the right column. Because
+     each column is a single item, neither inflates the other's row height — so
+     the byline sits directly under the title with no phantom gap. */
+  main .section.article-detail .default-content-wrapper:has(.article-body) > .article-body {
     grid-column: 1;
     min-width: 0;
   }
 
-  /* the aside sits at the top of the right column (not spanning body rows) */
-  main .section.article-detail .default-content-wrapper:has(.article-aside) > .article-aside {
+  main .section.article-detail .default-content-wrapper:has(.article-body) > .article-aside {
     grid-column: 2;
-    grid-row: 1;
     align-self: start;
   }
 

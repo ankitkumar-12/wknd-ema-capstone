@@ -198,9 +198,11 @@ function decorateArticleAside(main) {
     if (prev) prev.classList.add('article-author-photo');
   }
 
-  // author social links — convert the promoted text buttons (#-links titled
-  // Facebook/Twitter/Instagram) into dark boxed icon buttons like the footer.
-  const socialLinks = [...scope.querySelectorAll('a[href="#"]')].filter((a) => /facebook|twitter|instagram/i.test(a.getAttribute('title') || a.textContent));
+  // author social links — convert the promoted text buttons into dark boxed
+  // icon buttons like the footer. The author's links are placeholder hash links
+  // whose target varies per author (e.g. "#" or "#jbarr"), so match any hash
+  // link labelled Facebook/Twitter/Instagram.
+  const socialLinks = [...scope.querySelectorAll('a[href^="#"]')].filter((a) => /facebook|twitter|instagram/i.test(a.getAttribute('title') || a.textContent));
   socialLinks.forEach((a) => {
     const label = (a.getAttribute('title') || a.textContent).trim();
     const key = Object.keys(ARTICLE_SOCIAL_ICONS).find((k) => new RegExp(k, 'i').test(label));
@@ -272,7 +274,14 @@ function decorateArticleAside(main) {
     }
   });
 
-  wrapper.append(aside);
+  // Wrap the remaining body content (title, byline, prose, author bio) into a
+  // single .article-body element so the body column and the aside are each one
+  // grid item — this stops the tall aside from inflating the body's first grid
+  // row (which pushed the byline far below the title).
+  const body = document.createElement('div');
+  body.className = 'article-body';
+  while (wrapper.firstChild) body.append(wrapper.firstChild);
+  wrapper.append(body, aside);
 }
 
 /**
