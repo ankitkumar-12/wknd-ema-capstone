@@ -276,6 +276,34 @@ function decorateArticleAside(main) {
 }
 
 /**
+ * On adventure-detail pages, the overview image is followed by a short caption
+ * that the source renders as a small uppercase title (e.g. "Yosemite is a great
+ * family friendly adventure"). In our content that caption is a bare text node
+ * beside the image inside a <p>; wrap it in a span so CSS can style it.
+ * @param {Element} main The main element
+ */
+function decorateAdventureCaption(main) {
+  const section = main.querySelector('.section.carousel-container.tabs-container');
+  if (!section) return;
+  // The tabs block re-classes panels asynchronously after decorateMain, so this
+  // is scoped to the section (not .tabs-panel) and matches any <p> that pairs an
+  // image with a trailing text caption — the paragraph node persists regardless
+  // of the tabs decoration timing.
+  section.querySelectorAll('p').forEach((p) => {
+    if (!p.querySelector('picture, img')) return;
+    if (p.querySelector('.adventure-caption')) return;
+    [...p.childNodes].forEach((node) => {
+      if (node.nodeType === Node.TEXT_NODE && node.textContent.trim()) {
+        const span = document.createElement('span');
+        span.className = 'adventure-caption';
+        span.textContent = node.textContent.trim();
+        node.replaceWith(span);
+      }
+    });
+  });
+}
+
+/**
  * Decorates the main element.
  * @param {Element} main The main element
  */
@@ -287,6 +315,7 @@ export function decorateMain(main) {
   decorateBlocks(main);
   decorateButtons(main);
   decorateArticleAside(main);
+  decorateAdventureCaption(main);
 }
 
 /**

@@ -50,6 +50,12 @@ main > .section > .carousel-wrapper {
   min-height: min(52vw, 640px);
 }
 
+/* adventure-detail hero: a wide, SHORTER landscape banner (~1440×400 in the
+   source, aspect ~3.6) rather than the tall home hero. */
+main .section.carousel-container.tabs-container .carousel .carousel-slide {
+  min-height: min(28vw, 400px);
+}
+
 .carousel .carousel-slide .carousel-slide-image picture {
   position: absolute;
   inset: 0;
