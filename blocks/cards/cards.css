@@ -24,6 +24,12 @@
   line-height: 0;
 }
 
+/* the image is wrapped in a link (whole teaser is clickable); make it a block
+   so the image keeps filling the card width as before */
+.cards .cards-card-image-link {
+  display: block;
+}
+
 .cards > ul > li img,
 .cards .cards-panel > ul > li img {
   width: 100%;

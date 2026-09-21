@@ -118,7 +118,16 @@ function buildCard(row) {
   if (row.image) {
     const imageDiv = document.createElement('div');
     imageDiv.className = 'cards-card-image';
-    imageDiv.append(createOptimizedPicture(row.image, row.title || '', false, [{ width: '750' }]));
+    // wrap the image in a link to the article so the whole teaser (image
+    // included) is clickable, matching the source. Uses the same URL as the
+    // title link below.
+    const imageLink = document.createElement('a');
+    imageLink.className = 'cards-card-image-link';
+    imageLink.href = row.path;
+    imageLink.setAttribute('aria-label', row.title || row.path);
+    imageLink.setAttribute('tabindex', '-1');
+    imageLink.append(createOptimizedPicture(row.image, row.title || '', false, [{ width: '750' }]));
+    imageDiv.append(imageLink);
     li.append(imageDiv);
   }
 
