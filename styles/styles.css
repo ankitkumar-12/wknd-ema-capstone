@@ -537,6 +537,14 @@ main .section.carousel-container.tabs-container .default-content-wrapper h5::aft
   }
 }
 
+/* article-detail hero → breadcrumb spacing: give the breadcrumb room below the
+   hero image so it isn't pinned tight to it (matches the source). The
+   breadcrumb-to-title gap is already ~30px from the title's own top margin, so
+   only top spacing is added here. Scoped to the article template. */
+main .section.article-detail .breadcrumbs-wrapper {
+  margin-top: 14px;
+}
+
 main .section.article-detail .article-aside {
   border-top: 2px solid var(--light-color);
   padding-top: 16px;

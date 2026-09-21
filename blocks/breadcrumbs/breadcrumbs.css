@@ -18,15 +18,15 @@
   gap: 8px;
 }
 
-/* chevron separator before every item except the first */
+/* separator before every item except the first — a small yellow filled
+   right-pointing triangle (▶), matching the source */
 .breadcrumbs .breadcrumbs-item + .breadcrumbs-item::before {
   content: '';
-  width: 6px;
-  height: 6px;
-  border: 2px solid currentcolor;
-  border-width: 2px 2px 0 0;
-  transform: rotate(45deg);
-  opacity: 0.6;
+  width: 0;
+  height: 0;
+  border-top: 5px solid transparent;
+  border-bottom: 5px solid transparent;
+  border-left: 7px solid var(--wknd-yellow);
 }
 
 .breadcrumbs .breadcrumbs-item [aria-current='page'] {
