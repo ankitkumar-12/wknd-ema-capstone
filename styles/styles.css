@@ -373,6 +373,19 @@ main .section.highlight {
     width: 100%;
   }
 
+  /* hero is full-bleed: because this section is a centered, max-width grid, the
+     carousel-wrapper (a grid item) is capped at the 1200px track. Break it out
+     to the full viewport width, centered on its own position so it touches both
+     viewport edges regardless of the section's offset. */
+  main .section.carousel-container.tabs-container > .carousel-wrapper {
+    width: 100vw;
+    max-width: 100vw;
+    position: relative;
+    left: 50%;
+    margin-left: -50vw;
+    margin-right: 0;
+  }
+
   main .section.carousel-container.tabs-container > div {
     max-width: none;
     min-width: 0;
