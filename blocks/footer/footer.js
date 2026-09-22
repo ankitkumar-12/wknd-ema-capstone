@@ -24,6 +24,21 @@ export default async function decorate(block) {
   const footer = document.createElement('div');
   while (fragment.firstElementChild) footer.append(fragment.firstElementChild);
 
+  // the footer nav is authored as a single "Home" group whose nested list holds
+  // the real links (Magazine, Adventures, FAQs, About Us). The source renders
+  // just those links in a single horizontal row with no "Home" group heading,
+  // so promote the nested items up to the top-level list and drop the wrapping
+  // group. Defensive: only collapses when there is exactly one top-level group
+  // that wraps a nested list.
+  const navList = footer.querySelector('ul');
+  if (navList) {
+    const groups = [...navList.children];
+    if (groups.length === 1) {
+      const nested = groups[0].querySelector('ul');
+      if (nested) navList.replaceChildren(...nested.children);
+    }
+  }
+
   // the WKND brand is a plain wordmark in the source footer, not a CTA — undo
   // any .button promotion applied to it by decorateButtons
   footer.querySelectorAll('a.button').forEach((a) => {
